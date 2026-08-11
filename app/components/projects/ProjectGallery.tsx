@@ -10,25 +10,48 @@ type ProjectGalleryProps = {
   onClose: () => void;
 };
 
+type GalleryPointerStart = {
+  x: number;
+  y: number;
+  panX: number;
+  panY: number;
+};
+
 export default function ProjectGallery({ project, onClose }: ProjectGalleryProps) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [direction, setDirection] = useState<"next" | "previous">("next");
   const [dragOffset, setDragOffset] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
+  const [zoomScale, setZoomScale] = useState(1);
+  const [detailPan, setDetailPan] = useState({ x: 0, y: 0 });
   const closeButtonRef = useRef<HTMLButtonElement>(null);
-  const pointerStartRef = useRef<{ x: number; y: number } | null>(null);
-  const wheelLockedRef = useRef(false);
+  const galleryStageRef = useRef<HTMLDivElement>(null);
+  const pointerStartRef = useRef<GalleryPointerStart | null>(null);
+
+  const resetDetailView = useCallback(() => {
+    pointerStartRef.current = null;
+    setDragOffset(0);
+    setIsDragging(false);
+    setZoomScale(1);
+    setDetailPan({ x: 0, y: 0 });
+  }, []);
+
+  const closeGallery = useCallback(() => {
+    resetDetailView();
+    onClose();
+  }, [onClose, resetDetailView]);
 
   const move = useCallback(
     (step: 1 | -1) => {
       if (!project?.images.length) return;
 
+      resetDetailView();
       setDirection(step === 1 ? "next" : "previous");
       setActiveIndex((current) =>
         (current + step + project.images.length) % project.images.length,
       );
     },
-    [project],
+    [project, resetDetailView],
   );
 
   useEffect(() => {
@@ -40,7 +63,7 @@ export default function ProjectGallery({ project, onClose }: ProjectGalleryProps
     closeButtonRef.current?.focus();
 
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") onClose();
+      if (event.key === "Escape") closeGallery();
       if (event.key === "ArrowDown" || event.key === "ArrowRight") {
         event.preventDefault();
         move(1);
@@ -58,7 +81,7 @@ export default function ProjectGallery({ project, onClose }: ProjectGalleryProps
       window.removeEventListener("keydown", handleKeyDown);
       previouslyFocused?.focus();
     };
-  }, [move, onClose, project]);
+  }, [closeGallery, move, project]);
 
   if (typeof document === "undefined" || !project || project.images.length === 0) {
     return null;
@@ -71,13 +94,20 @@ export default function ProjectGallery({ project, onClose }: ProjectGalleryProps
   const paddedIndex = String(activeIndex + 1).padStart(2, "0");
   const paddedTotal = String(project.images.length).padStart(2, "0");
   const dragProgress = Math.min(Math.abs(dragOffset) / 170, 1);
+  const maxZoom =
+    project.slug === "fyxtez-terminal"
+      ? 2.65
+      : project.slug === "exchange-positions"
+        ? 1.85
+        : 2.1;
+  const isDetailMode = zoomScale > 1.001;
 
   return createPortal(
     <div
       className="gallery-backdrop"
       role="presentation"
       onMouseDown={(event) => {
-        if (event.currentTarget === event.target) onClose();
+        if (event.currentTarget === event.target) closeGallery();
       }}
     >
       <section
@@ -87,25 +117,48 @@ export default function ProjectGallery({ project, onClose }: ProjectGalleryProps
         aria-labelledby="gallery-project-title"
       >
         <div
-          className={`gallery-visual ${isDragging ? "is-dragging" : ""}`}
+          className={`gallery-visual ${isDragging ? "is-dragging" : ""} ${
+            isDetailMode ? "is-detail-mode" : ""
+          }`}
           onWheel={(event) => {
-            const distance =
-              Math.abs(event.deltaX) > Math.abs(event.deltaY)
-                ? event.deltaX
-                : event.deltaY;
+            if (event.deltaY === 0) return;
 
-            if (Math.abs(distance) < 32 || wheelLockedRef.current) return;
+            event.preventDefault();
+            const zoomDirection = event.deltaY < 0 ? 1 : -1;
+            const zoomStep = Math.min(
+              0.22,
+              Math.max(0.1, Math.abs(event.deltaY) * 0.0016),
+            );
+            const nextZoom = Math.min(
+              maxZoom,
+              Math.max(1, zoomScale + zoomDirection * zoomStep),
+            );
 
-            wheelLockedRef.current = true;
-            move(distance > 0 ? 1 : -1);
-            window.setTimeout(() => {
-              wheelLockedRef.current = false;
-            }, 560);
+            if (Math.abs(nextZoom - zoomScale) < 0.001) return;
+
+            const stage = galleryStageRef.current;
+            const maxPanX = stage ? ((nextZoom - 1) * stage.clientWidth) / 2 : 0;
+            const maxPanY = stage ? ((nextZoom - 1) * stage.clientHeight) / 2 : 0;
+
+            setZoomScale(nextZoom);
+            setDetailPan((current) =>
+              nextZoom <= 1.001
+                ? { x: 0, y: 0 }
+                : {
+                    x: Math.max(-maxPanX, Math.min(maxPanX, current.x)),
+                    y: Math.max(-maxPanY, Math.min(maxPanY, current.y)),
+                  },
+            );
           }}
           onPointerDown={(event) => {
             if (event.pointerType === "mouse" && event.button !== 0) return;
 
-            pointerStartRef.current = { x: event.clientX, y: event.clientY };
+            pointerStartRef.current = {
+              x: event.clientX,
+              y: event.clientY,
+              panX: detailPan.x,
+              panY: detailPan.y,
+            };
             setDragOffset(0);
             setIsDragging(true);
             event.currentTarget.setPointerCapture(event.pointerId);
@@ -114,6 +167,26 @@ export default function ProjectGallery({ project, onClose }: ProjectGalleryProps
             if (pointerStartRef.current === null) return;
 
             const distanceX = event.clientX - pointerStartRef.current.x;
+            const distanceY = event.clientY - pointerStartRef.current.y;
+
+            if (isDetailMode) {
+              const stage = galleryStageRef.current;
+              const maxPanX = stage ? ((zoomScale - 1) * stage.clientWidth) / 2 : 260;
+              const maxPanY = stage ? ((zoomScale - 1) * stage.clientHeight) / 2 : 220;
+
+              setDetailPan({
+                x: Math.max(
+                  -maxPanX,
+                  Math.min(maxPanX, pointerStartRef.current.panX + distanceX),
+                ),
+                y: Math.max(
+                  -maxPanY,
+                  Math.min(maxPanY, pointerStartRef.current.panY + distanceY),
+                ),
+              });
+              return;
+            }
+
             const resistedDistance = Math.max(-170, Math.min(170, distanceX * 0.62));
             setDragOffset(resistedDistance);
           }}
@@ -125,6 +198,8 @@ export default function ProjectGallery({ project, onClose }: ProjectGalleryProps
             pointerStartRef.current = null;
             setIsDragging(false);
             setDragOffset(0);
+
+            if (isDetailMode) return;
 
             if (Math.abs(distanceX) > 54 && Math.abs(distanceX) > Math.abs(distanceY)) {
               move(distanceX < 0 ? 1 : -1);
@@ -148,6 +223,7 @@ export default function ProjectGallery({ project, onClose }: ProjectGalleryProps
               </span>
             </div>
             <div
+              ref={galleryStageRef}
               className={`gallery-image-stage ${
                 project.slug === "exchange-positions" ? "gallery-image-stage--mobile" : ""
               }`}
@@ -166,6 +242,7 @@ export default function ProjectGallery({ project, onClose }: ProjectGalleryProps
                       alt=""
                       fill
                       draggable={false}
+                      unoptimized
                       sizes="(max-width: 900px) 92vw, 68vw"
                     />
                   </div>
@@ -181,6 +258,7 @@ export default function ProjectGallery({ project, onClose }: ProjectGalleryProps
                       alt=""
                       fill
                       draggable={false}
+                      unoptimized
                       sizes="(max-width: 900px) 92vw, 68vw"
                     />
                   </div>
@@ -188,17 +266,21 @@ export default function ProjectGallery({ project, onClose }: ProjectGalleryProps
               ) : null}
               <span
                 className={`gallery-drag-cue gallery-drag-cue--previous ${
-                  isDragging && dragOffset > 18 ? "is-active" : ""
+                  isDragging && !isDetailMode && dragOffset > 18 ? "is-active" : ""
                 }`}
                 aria-hidden="true"
               >
                 ← Previous
               </span>
               <div
-                className={`gallery-image-drag-layer ${isDragging ? "is-dragging" : ""}`}
+                className={`gallery-image-drag-layer ${isDragging ? "is-dragging" : ""} ${
+                  isDetailMode ? "is-detail-mode" : ""
+                }`}
                 style={{
-                  opacity: 1 - dragProgress * 0.1,
-                  transform: `translate3d(${dragOffset}px, 0, 0) scale(${1 - dragProgress * 0.018})`,
+                  opacity: isDetailMode ? 1 : 1 - dragProgress * 0.1,
+                  transform: isDetailMode
+                    ? `translate3d(${detailPan.x}px, ${detailPan.y}px, 0) scale(${zoomScale})`
+                    : `translate3d(${dragOffset}px, 0, 0) scale(${1 - dragProgress * 0.018})`,
                 }}
               >
                 <Image
@@ -209,17 +291,36 @@ export default function ProjectGallery({ project, onClose }: ProjectGalleryProps
                   fill
                   priority
                   draggable={false}
-                  sizes="(max-width: 900px) 92vw, 68vw"
+                  unoptimized
+                  sizes="(max-width: 500px) 240vw, (max-width: 900px) 140vw, 68vw"
                 />
               </div>
               <span
                 className={`gallery-drag-cue gallery-drag-cue--next ${
-                  isDragging && dragOffset < -18 ? "is-active" : ""
+                  isDragging && !isDetailMode && dragOffset < -18 ? "is-active" : ""
                 }`}
                 aria-hidden="true"
               >
                 Next →
               </span>
+              <output className="gallery-zoom-status" aria-live="polite">
+                {Math.round(zoomScale * 100)}%
+              </output>
+              <button
+                className="gallery-detail-toggle"
+                type="button"
+                onPointerDown={(event) => event.stopPropagation()}
+                onClick={() => {
+                  pointerStartRef.current = null;
+                  setDragOffset(0);
+                  setIsDragging(false);
+                  setDetailPan({ x: 0, y: 0 });
+                  setZoomScale((current) => (current > 1.001 ? 1 : maxZoom));
+                }}
+                aria-pressed={isDetailMode}
+              >
+                {isDetailMode ? "Fit image −" : "Zoom details +"}
+              </button>
             </div>
           </div>
         </div>
@@ -229,7 +330,7 @@ export default function ProjectGallery({ project, onClose }: ProjectGalleryProps
             ref={closeButtonRef}
             className="gallery-close gallery-close--primary"
             type="button"
-            onClick={onClose}
+            onClick={closeGallery}
             aria-label="Close project gallery"
           >
             Close <span aria-hidden="true">×</span>
@@ -240,6 +341,11 @@ export default function ProjectGallery({ project, onClose }: ProjectGalleryProps
             <h2 id="gallery-project-title">{project.title}</h2>
             <span>{project.access}</span>
             <p>{project.description}</p>
+            <ul className="gallery-project-tags" aria-label="Project technologies">
+              {project.tags.map((tag) => (
+                <li key={tag}>{tag}</li>
+              ))}
+            </ul>
           </div>
 
           <div className="gallery-position" aria-live="polite">
@@ -256,6 +362,7 @@ export default function ProjectGallery({ project, onClose }: ProjectGalleryProps
                 type="button"
                 key={item.src}
                 onClick={() => {
+                  resetDetailView();
                   setDirection(index > activeIndex ? "next" : "previous");
                   setActiveIndex(index);
                 }}
@@ -296,14 +403,16 @@ export default function ProjectGallery({ project, onClose }: ProjectGalleryProps
           <button
             className="gallery-close gallery-close--secondary"
             type="button"
-            onClick={onClose}
+            onClick={closeGallery}
             aria-label="Close project gallery"
           >
             Close gallery <span aria-hidden="true">×</span>
           </button>
 
           <p className="gallery-hint">
-            Arrow keys · Mouse drag · Mouse wheel · Swipe on mobile
+            {isDetailMode
+              ? `Mouse wheel zoom · ${Math.round(zoomScale * 100)}% · Drag image to inspect`
+              : "Mouse wheel zoom · Drag to change screenshot · Swipe or zoom on mobile"}
           </p>
         </aside>
       </section>
