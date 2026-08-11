@@ -65,6 +65,9 @@ export default function ProjectGallery({ project, onClose }: ProjectGalleryProps
   }
 
   const image = project.images[activeIndex];
+  const previousImage =
+    project.images[(activeIndex - 1 + project.images.length) % project.images.length];
+  const nextImage = project.images[(activeIndex + 1) % project.images.length];
   const paddedIndex = String(activeIndex + 1).padStart(2, "0");
   const paddedTotal = String(project.images.length).padStart(2, "0");
   const dragProgress = Math.min(Math.abs(dragOffset) / 170, 1);
@@ -119,13 +122,13 @@ export default function ProjectGallery({ project, onClose }: ProjectGalleryProps
 
             const distanceX = event.clientX - pointerStartRef.current.x;
             const distanceY = event.clientY - pointerStartRef.current.y;
-            const distance =
-              Math.abs(distanceX) >= Math.abs(distanceY) ? distanceX : distanceY;
             pointerStartRef.current = null;
             setIsDragging(false);
             setDragOffset(0);
 
-            if (Math.abs(distance) > 54) move(distance < 0 ? 1 : -1);
+            if (Math.abs(distanceX) > 54 && Math.abs(distanceX) > Math.abs(distanceY)) {
+              move(distanceX < 0 ? 1 : -1);
+            }
           }}
           onPointerCancel={() => {
             pointerStartRef.current = null;
@@ -149,6 +152,40 @@ export default function ProjectGallery({ project, onClose }: ProjectGalleryProps
                 project.slug === "exchange-positions" ? "gallery-image-stage--mobile" : ""
               }`}
             >
+              {project.images.length > 1 ? (
+                <>
+                  <div
+                    className={`gallery-image-ghost gallery-image-ghost--previous ${
+                      isDragging && dragOffset > 8 ? "is-active" : ""
+                    }`}
+                    aria-hidden="true"
+                  >
+                    <Image
+                      className="gallery-image"
+                      src={previousImage.src}
+                      alt=""
+                      fill
+                      draggable={false}
+                      sizes="(max-width: 900px) 92vw, 68vw"
+                    />
+                  </div>
+                  <div
+                    className={`gallery-image-ghost gallery-image-ghost--next ${
+                      isDragging && dragOffset < -8 ? "is-active" : ""
+                    }`}
+                    aria-hidden="true"
+                  >
+                    <Image
+                      className="gallery-image"
+                      src={nextImage.src}
+                      alt=""
+                      fill
+                      draggable={false}
+                      sizes="(max-width: 900px) 92vw, 68vw"
+                    />
+                  </div>
+                </>
+              ) : null}
               <span
                 className={`gallery-drag-cue gallery-drag-cue--previous ${
                   isDragging && dragOffset > 18 ? "is-active" : ""
@@ -190,7 +227,7 @@ export default function ProjectGallery({ project, onClose }: ProjectGalleryProps
         <aside className="gallery-details">
           <button
             ref={closeButtonRef}
-            className="gallery-close"
+            className="gallery-close gallery-close--primary"
             type="button"
             onClick={onClose}
             aria-label="Close project gallery"
@@ -255,6 +292,15 @@ export default function ProjectGallery({ project, onClose }: ProjectGalleryProps
           ) : (
             <p className="gallery-private-note">Private system · Visual case study only</p>
           )}
+
+          <button
+            className="gallery-close gallery-close--secondary"
+            type="button"
+            onClick={onClose}
+            aria-label="Close project gallery"
+          >
+            Close gallery <span aria-hidden="true">×</span>
+          </button>
 
           <p className="gallery-hint">
             Arrow keys · Mouse drag · Mouse wheel · Swipe on mobile

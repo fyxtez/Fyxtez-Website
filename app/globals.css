@@ -1291,17 +1291,56 @@ main,
   height: calc(100% - 44px);
 }
 
+.gallery-image-ghost {
+  position: absolute;
+  z-index: 1;
+  inset: 10px;
+  overflow: hidden;
+  border: 1px solid rgba(245, 166, 35, 0.18);
+  background: #0b0c0c;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.48);
+  filter: grayscale(0.35) brightness(0.58);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 140ms ease,
+    transform 220ms cubic-bezier(0.2, 0.72, 0.2, 1);
+}
+
+.gallery-image-ghost--previous {
+  transform: translateX(-34px) scale(0.94);
+}
+
+.gallery-image-ghost--next {
+  transform: translateX(34px) scale(0.94);
+}
+
+.gallery-image-ghost--previous.is-active {
+  transform: translateX(-12px) scale(0.97);
+  opacity: 0.42;
+}
+
+.gallery-image-ghost--next.is-active {
+  transform: translateX(12px) scale(0.97);
+  opacity: 0.42;
+}
+
 .gallery-image-drag-layer {
   position: absolute;
+  z-index: 2;
   inset: 0;
+  background: #080909;
+  box-shadow: 0 0 0 rgba(0, 0, 0, 0);
   transform-origin: center;
   transition:
     transform 240ms cubic-bezier(0.2, 0.72, 0.2, 1),
-    opacity 200ms ease;
-  will-change: transform, opacity;
+    opacity 200ms ease,
+    box-shadow 180ms ease;
+  will-change: transform, opacity, box-shadow;
 }
 
 .gallery-image-drag-layer.is-dragging {
+  box-shadow: 0 18px 52px rgba(0, 0, 0, 0.52);
   transition: none;
 }
 
@@ -1390,6 +1429,10 @@ main,
 .gallery-close:hover,
 .gallery-close:focus-visible {
   color: var(--text);
+}
+
+.gallery-close--secondary {
+  display: none;
 }
 
 .gallery-project-copy {
@@ -1858,7 +1901,7 @@ main,
     padding: 34px 24px 28px;
   }
 
-  .gallery-close {
+  .gallery-close--primary {
     position: absolute;
     z-index: 6;
     top: 17px;
@@ -2003,6 +2046,10 @@ main,
     left: 14px;
   }
 
+  .gallery-close--primary {
+    right: 12px;
+  }
+
   .gallery-image-frame {
     height: 40dvh;
   }
@@ -2030,6 +2077,41 @@ main,
 
   .gallery-controls button {
     min-height: 48px;
+  }
+}
+
+@media (max-width: 500px) {
+  .gallery-close--secondary {
+    position: static;
+    display: flex;
+    width: 100%;
+    min-height: 48px;
+    align-items: center;
+    justify-content: space-between;
+    align-self: stretch;
+    margin-top: 10px;
+    padding: 0 13px;
+    border: 1px solid var(--line);
+    background: rgba(255, 255, 255, 0.025);
+    color: var(--muted);
+    font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0;
+    text-transform: none;
+    backdrop-filter: none;
+  }
+
+  .gallery-close--secondary:hover,
+  .gallery-close--secondary:focus-visible {
+    border-color: var(--accent-line);
+    color: var(--text);
+  }
+
+  .gallery-close--secondary span {
+    margin-left: 12px;
+    color: var(--accent);
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
   }
 }
 
