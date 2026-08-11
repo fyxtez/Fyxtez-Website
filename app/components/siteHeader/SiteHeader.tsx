@@ -1,0 +1,51 @@
+"use client";
+
+import Link from "next/link";
+import LogoMark from "../logo/LogoMark";
+
+type SiteHeaderProps = {
+  current?: "home" | "projects";
+};
+
+export default function SiteHeader({ current = "home" }: SiteHeaderProps) {
+  const contactHref = current === "home" ? "#contact" : "/#contact";
+
+  return (
+    <header className="site-header">
+      <Link className="brand" href="/" aria-label="Fyxtez home">
+        <LogoMark />
+        <span className="brand-name">Fyxtez</span>
+      </Link>
+
+      <nav className="site-nav" aria-label="Primary navigation">
+        <Link className={current === "home" ? "nav-active" : undefined} href="/">
+          Home
+        </Link>
+        <Link
+          className={current === "projects" ? "nav-active" : undefined}
+          href="/projects"
+        >
+          Projects
+        </Link>
+        <Link href="/#capabilities">Capabilities</Link>
+        <a
+          href={contactHref}
+          onClick={(event) => {
+            if (current !== "home") return;
+
+            const contact = document.getElementById("contact");
+            if (!contact) return;
+
+            event.preventDefault();
+            window.history.replaceState(null, "", "#contact");
+            contact.scrollIntoView({ behavior: "smooth", block: "start" });
+          }}
+        >
+          Contact
+        </a>
+      </nav>
+
+      <span className="nav-status">Available</span>
+    </header>
+  );
+}
