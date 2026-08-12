@@ -1,9 +1,10 @@
+import "../ProjectsPage.css";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import ProjectCaseStudyLauncher from "../../components/projects/ProjectCaseStudyLauncher";
-import SiteFooter from "../../components/siteFooter/SiteFooter";
-import SiteHeader from "../../components/siteHeader/SiteHeader";
+import ProjectCaseStudyLauncher from "../../components/projects/ProjectCaseStudyLauncher/ProjectCaseStudyLauncher";
+import SiteFooter from "../../components/SiteFooter/SiteFooter";
+import SiteHeader from "../../components/SiteHeader/SiteHeader";
 import { getProjectViews, projects } from "../../data/projects";
 
 type ProjectPageProps = {

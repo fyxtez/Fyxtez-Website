@@ -1,6 +1,6 @@
 # Fyxtez Website
 
-Personal portfolio built with Next.js, React, TypeScript, and Tailwind CSS.
+Personal portfolio built with Next.js, React, TypeScript, and plain CSS.
 
 ## Included
 
@@ -10,6 +10,8 @@ Personal portfolio built with Next.js, React, TypeScript, and Tailwind CSS.
 - Keyboard-accessible project gallery with focus containment
 - Lazy-loaded gallery and architecture diagrams
 - Responsive desktop and mobile layouts
+- Component-owned CSS colocated beside each TSX component
+- No Tailwind or CSS-in-JS dependency
 
 ## Requirements
 

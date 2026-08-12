@@ -1,9 +1,10 @@
+import "./About.css";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import LogoMark from "../components/logo/LogoMark";
-import SiteFooter from "../components/siteFooter/SiteFooter";
-import SiteHeader from "../components/siteHeader/SiteHeader";
+import LogoMark from "../components/LogoMark/LogoMark";
+import SiteFooter from "../components/SiteFooter/SiteFooter";
+import SiteHeader from "../components/SiteHeader/SiteHeader";
 import { projects } from "../data/projects";
 
 const aboutDescription =

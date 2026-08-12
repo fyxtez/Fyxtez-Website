@@ -1,7 +1,8 @@
+import "./ProjectsPage.css";
 import type { Metadata } from "next";
-import ProjectsCatalog from "../components/projects/ProjectsCatalog";
-import SiteFooter from "../components/siteFooter/SiteFooter";
-import SiteHeader from "../components/siteHeader/SiteHeader";
+import ProjectsCatalog from "../components/projects/ProjectsCatalog/ProjectsCatalog";
+import SiteFooter from "../components/SiteFooter/SiteFooter";
+import SiteHeader from "../components/SiteHeader/SiteHeader";
 import { projects } from "../data/projects";
 
 export const metadata: Metadata = {

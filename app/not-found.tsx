@@ -1,6 +1,7 @@
+import "./projects/ProjectsPage.css";
 import Link from "next/link";
-import SiteFooter from "./components/siteFooter/SiteFooter";
-import SiteHeader from "./components/siteHeader/SiteHeader";
+import SiteFooter from "./components/SiteFooter/SiteFooter";
+import SiteHeader from "./components/SiteHeader/SiteHeader";
 
 export default function NotFound() {
   return (

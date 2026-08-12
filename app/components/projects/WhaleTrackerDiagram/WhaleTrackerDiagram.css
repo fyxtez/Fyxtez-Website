@@ -1,0 +1,829 @@
+/* Styles owned by WhaleTrackerDiagram. */
+
+.whale-diagram {
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.018) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.018) 1px, transparent 1px),
+    radial-gradient(circle at 76% 38%, rgba(245, 166, 35, 0.048), transparent 34%);
+  background-size: 34px 34px, 34px 34px, auto;
+}
+
+.whale-cli-strip,
+.whale-node,
+.whale-arrow,
+.whale-direction-split,
+.whale-state-schema,
+.whale-position-card,
+.whale-report-facts,
+.whale-runtime-config,
+.whale-runtime-lane,
+.whale-shutdown-path {
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+}
+
+.whale-cli-strip {
+  display: grid;
+  align-items: center;
+  grid-template-columns: repeat(3, 1fr) auto;
+  gap: 0;
+  margin-top: clamp(16px, 1.65vw, 22px);
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.016);
+}
+
+.whale-cli-strip > span {
+  padding: 10px 14px;
+}
+
+.whale-cli-strip > span + span {
+  border-left: 1px solid var(--line);
+}
+
+.whale-cli-strip small,
+.whale-cli-strip strong {
+  display: block;
+}
+
+.whale-cli-strip small {
+  color: var(--dim);
+  font-size: 10px;
+  text-transform: uppercase;
+}
+
+.whale-cli-strip strong {
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 550;
+}
+
+.whale-cli-strip > b {
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+  padding: 0 14px;
+  border-left: 1px solid rgba(245, 166, 35, 0.32);
+  color: var(--accent);
+  font-size: 10px;
+  font-weight: 650;
+  text-transform: uppercase;
+}
+
+.whale-ingestion-flow,
+.whale-report-flow {
+  display: grid;
+  align-items: stretch;
+  margin-top: clamp(16px, 1.65vw, 22px);
+}
+
+.whale-ingestion-flow {
+  grid-template-columns: minmax(0, 1fr) 72px minmax(0, 1fr) 72px minmax(0, 1.24fr) 72px minmax(0, 1fr);
+}
+
+.whale-report-flow {
+  grid-template-columns: minmax(0, 1fr) 72px minmax(0, 1fr) 72px minmax(0, 1fr) 84px minmax(0, 1fr);
+}
+
+.whale-node {
+  min-width: 0;
+  min-height: 152px;
+  padding: clamp(15px, 1.35vw, 19px);
+  border: 1px solid var(--line-strong);
+  background: rgba(10, 11, 11, 0.91);
+}
+
+.whale-node--accent {
+  border-color: rgba(245, 166, 35, 0.46);
+  background: linear-gradient(145deg, rgba(245, 166, 35, 0.09), rgba(10, 11, 11, 0.95) 58%);
+}
+
+.whale-node > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  color: var(--dim);
+  font-size: 11px;
+  text-transform: uppercase;
+}
+
+.whale-node > div > span {
+  color: var(--accent);
+}
+
+.whale-node > strong {
+  display: block;
+  margin-top: 23px;
+  font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: clamp(18px, 1.25vw, 21px);
+  font-weight: 620;
+  letter-spacing: -0.02em;
+}
+
+.whale-node > p {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: clamp(13px, 0.9vw, 15px);
+  line-height: 1.48;
+}
+
+.whale-arrow {
+  position: relative;
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  justify-content: center;
+}
+
+.whale-arrow span {
+  position: absolute;
+  z-index: 2;
+  top: 24px;
+  left: 50%;
+  overflow: hidden;
+  width: calc(100% - 10px);
+  padding: 0;
+  color: var(--muted);
+  font-size: 10px;
+  letter-spacing: 0.07em;
+  text-align: center;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  transform: translateX(-50%);
+  white-space: nowrap;
+}
+
+.whale-arrow i {
+  position: relative;
+  width: 100%;
+  height: 1px;
+  background: var(--line-strong);
+}
+
+.whale-arrow i::before {
+  position: absolute;
+  top: -2px;
+  right: 0;
+  width: 5px;
+  height: 5px;
+  border-top: 1px solid var(--accent);
+  border-right: 1px solid var(--accent);
+  content: "";
+  transform: rotate(45deg);
+}
+
+.whale-arrow i::after {
+  position: absolute;
+  top: -2px;
+  left: 0;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 9px rgba(245, 166, 35, 0.62);
+  content: "";
+  animation: commandant-packet 1.7s ease-in-out infinite;
+}
+
+.whale-direction-split {
+  display: grid;
+  gap: 7px;
+  padding: 9px;
+  border: 1px solid rgba(245, 166, 35, 0.42);
+  background: rgba(245, 166, 35, 0.045);
+}
+
+.whale-direction-split article {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 8px;
+  padding: 10px;
+  border: 1px solid var(--line);
+  background: rgba(8, 9, 9, 0.88);
+}
+
+.whale-direction-split article > span {
+  color: var(--accent);
+  font-size: 9px;
+}
+
+.whale-direction-split article > strong {
+  font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 14px;
+  font-weight: 620;
+}
+
+.whale-direction-split article > small {
+  color: var(--dim);
+  font-size: 9px;
+  text-align: right;
+}
+
+.whale-direction-split article > small + small {
+  grid-column: 3;
+}
+
+.whale-state-schema {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr) auto;
+  margin-top: auto;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.whale-state-schema span,
+.whale-state-schema strong {
+  display: flex;
+  min-height: 42px;
+  align-items: center;
+  justify-content: center;
+  padding: 0 10px;
+  font-size: 10px;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.whale-state-schema span {
+  color: var(--muted);
+}
+
+.whale-state-schema span + span {
+  border-left: 1px solid var(--line);
+}
+
+.whale-state-schema strong {
+  border-left: 1px solid rgba(245, 166, 35, 0.32);
+  color: var(--accent);
+  font-weight: 650;
+}
+
+.whale-position-card {
+  display: grid;
+  grid-template-columns: minmax(180px, 0.42fr) 1.58fr;
+  margin-top: 17px;
+  border: 1px solid var(--line-strong);
+  background: rgba(5, 6, 6, 0.86);
+}
+
+.whale-position-card__identity {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  justify-content: center;
+  padding: 17px;
+  border-right: 1px solid var(--line);
+}
+
+.whale-position-card__identity small {
+  color: var(--dim);
+  font-size: 9px;
+  text-transform: uppercase;
+}
+
+.whale-position-card__identity strong {
+  margin-top: 7px;
+  color: var(--text);
+  font-size: 17px;
+  font-weight: 550;
+}
+
+.whale-position-card__identity span {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 10px;
+  color: #75c990;
+  font-size: 10px;
+}
+
+.whale-position-card__identity span i {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #75c990;
+}
+
+.whale-position-card dl {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  margin: 0;
+}
+
+.whale-position-card dl > div {
+  padding: 11px 13px;
+}
+
+.whale-position-card dl > div:nth-child(n + 4) {
+  border-top: 1px solid var(--line);
+}
+
+.whale-position-card dl > div:not(:nth-child(3n + 1)) {
+  border-left: 1px solid var(--line);
+}
+
+.whale-position-card dt {
+  color: var(--dim);
+  font-size: 9px;
+  text-transform: uppercase;
+}
+
+.whale-position-card dd {
+  margin: 6px 0 0;
+  color: var(--text);
+  font-size: 13px;
+}
+
+.whale-position-card dd.whale-positive {
+  color: #75c990;
+}
+
+.whale-report-facts {
+  display: grid;
+  align-items: center;
+  grid-template-columns: auto auto 1fr;
+  gap: 24px;
+  margin-top: auto;
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 10px;
+  text-transform: uppercase;
+}
+
+.whale-report-facts strong {
+  justify-self: end;
+  color: var(--accent);
+  font-weight: 650;
+}
+
+.whale-runtime-layout {
+  display: grid;
+  grid-template-columns: minmax(190px, 0.4fr) 1.6fr;
+  gap: 13px;
+  margin-top: clamp(17px, 1.8vw, 24px);
+}
+
+.whale-runtime-config {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  justify-content: center;
+  padding: 17px;
+  border: 1px solid rgba(245, 166, 35, 0.43);
+  background: rgba(245, 166, 35, 0.045);
+}
+
+.whale-runtime-config small {
+  color: var(--accent);
+  font-size: 10px;
+  text-transform: uppercase;
+}
+
+.whale-runtime-config strong {
+  margin: 10px 0 14px;
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.whale-runtime-config span,
+.whale-runtime-config b {
+  width: 100%;
+  padding: 8px 0;
+  border-top: 1px solid rgba(245, 166, 35, 0.13);
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 500;
+}
+
+.whale-runtime-config b {
+  color: var(--accent);
+}
+
+.whale-runtime-lanes {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.whale-runtime-lane {
+  border: 1px solid var(--line-strong);
+  background: rgba(10, 11, 11, 0.9);
+}
+
+.whale-runtime-lane > header {
+  display: flex;
+  min-height: 42px;
+  align-items: center;
+  gap: 8px;
+  padding: 0 12px;
+  border-bottom: 1px solid var(--line);
+  color: var(--text);
+  font-size: 12px;
+  font-weight: 650;
+  text-transform: uppercase;
+}
+
+.whale-runtime-lane > header i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.whale-runtime-lane--green > header i {
+  background: #75c990;
+}
+
+.whale-runtime-lane > header small {
+  margin-left: auto;
+  color: var(--dim);
+  font-size: 9px;
+}
+
+.whale-runtime-lane > div {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.whale-runtime-lane article {
+  min-width: 0;
+  padding: 13px 11px;
+}
+
+.whale-runtime-lane article + article {
+  border-left: 1px solid var(--line);
+}
+
+.whale-runtime-lane article > span,
+.whale-runtime-lane article strong,
+.whale-runtime-lane article small {
+  display: block;
+}
+
+.whale-runtime-lane article > span {
+  color: var(--accent);
+  font-size: 9px;
+}
+
+.whale-runtime-lane--green article > span {
+  color: #75c990;
+}
+
+.whale-runtime-lane article strong {
+  margin-top: 15px;
+  font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 13px;
+  font-weight: 620;
+}
+
+.whale-runtime-lane article small {
+  margin-top: 6px;
+  color: var(--dim);
+  font-size: 9px;
+  line-height: 1.4;
+}
+
+.whale-shutdown-path {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: auto;
+  padding-top: 13px;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 11px;
+  text-transform: uppercase;
+}
+
+.whale-shutdown-path i {
+  width: 32px;
+  height: 1px;
+  background: var(--line-strong);
+}
+
+.whale-shutdown-path strong {
+  color: var(--accent);
+  font-weight: 650;
+}
+
+@media (max-width: 1400px) and (min-width: 1101px) {
+
+  .whale-ingestion-flow,
+.whale-report-flow {
+    grid-template-columns: minmax(0, 1fr) 34px minmax(0, 1fr) 34px minmax(0, 1fr) 34px minmax(0, 1fr);
+  }
+
+  .whale-arrow span {
+    display: none;
+  }
+}
+
+@media (max-width: 1100px) {
+
+  .whale-ingestion-flow,
+.whale-report-flow {
+    grid-template-columns: minmax(0, 1fr) 34px minmax(0, 1fr) 34px minmax(0, 1fr) 34px minmax(0, 1fr);
+  }
+
+  .whale-arrow span {
+    display: none;
+  }
+}
+
+@media (max-width: 800px) {
+
+  .whale-cli-strip {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .whale-cli-strip > span {
+    padding: 14px 16px;
+  }
+
+  .whale-cli-strip > span:nth-child(3) {
+    border-top: 1px solid var(--line);
+    border-left: 0;
+  }
+
+  .whale-cli-strip > b {
+    min-height: 58px;
+    border-top: 1px solid rgba(245, 166, 35, 0.32);
+  }
+
+  .whale-cli-strip small {
+    font-size: 12px;
+  }
+
+  .whale-cli-strip strong {
+    font-size: 15px;
+  }
+
+  .whale-ingestion-flow,
+.whale-report-flow {
+    grid-template-columns: 1fr;
+    margin-top: 28px;
+  }
+
+  .whale-node {
+    min-height: 0;
+    padding: 20px;
+  }
+
+  .whale-node > div {
+    font-size: 12px;
+  }
+
+  .whale-node > strong {
+    margin-top: 20px;
+    font-size: 22px;
+  }
+
+  .whale-node > p {
+    font-size: 15px;
+  }
+
+  .whale-arrow {
+    min-height: 42px;
+  }
+
+  .whale-arrow span {
+    display: block;
+    top: 50%;
+    left: calc(50% + 15px);
+    overflow: visible;
+    width: auto;
+    max-width: calc(50% - 26px);
+    font-size: 11px;
+    text-align: left;
+    text-overflow: clip;
+    transform: translateY(-50%);
+  }
+
+  .whale-arrow i {
+    width: 1px;
+    height: 42px;
+  }
+
+  .whale-arrow i::before {
+    top: auto;
+    right: -2px;
+    bottom: 0;
+    transform: rotate(135deg);
+  }
+
+  .whale-arrow i::after {
+    top: 0;
+    left: -2px;
+    animation-name: commandant-packet-mobile;
+  }
+
+  .whale-direction-split article {
+    padding: 15px;
+  }
+
+  .whale-direction-split article > span,
+.whale-direction-split article > small {
+    font-size: 11px;
+  }
+
+  .whale-direction-split article > strong {
+    font-size: 17px;
+  }
+
+  .whale-state-schema {
+    grid-template-columns: repeat(3, 1fr);
+    margin-top: 28px;
+  }
+
+  .whale-state-schema span,
+.whale-state-schema strong {
+    min-height: 48px;
+    font-size: 12px;
+  }
+
+  .whale-state-schema span:nth-child(4),
+.whale-state-schema span:nth-child(5),
+.whale-state-schema span:nth-child(6),
+.whale-state-schema strong {
+    border-top: 1px solid var(--line);
+  }
+
+  .whale-state-schema strong {
+    grid-column: 1 / -1;
+    border-left: 0;
+  }
+
+  .whale-position-card {
+    grid-template-columns: 1fr;
+    margin-top: 24px;
+  }
+
+  .whale-position-card__identity {
+    padding: 20px;
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .whale-position-card__identity small,
+.whale-position-card__identity span,
+.whale-position-card dt {
+    font-size: 11px;
+  }
+
+  .whale-position-card__identity strong {
+    font-size: 19px;
+  }
+
+  .whale-position-card dd {
+    font-size: 15px;
+  }
+
+  .whale-report-facts {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-top: 28px;
+    font-size: 12px;
+  }
+
+  .whale-report-facts strong {
+    justify-self: start;
+  }
+
+  .whale-runtime-layout {
+    grid-template-columns: 1fr;
+    margin-top: 28px;
+  }
+
+  .whale-runtime-config {
+    padding: 20px;
+  }
+
+  .whale-runtime-config small,
+.whale-runtime-config span,
+.whale-runtime-config b {
+    font-size: 12px;
+  }
+
+  .whale-runtime-config strong {
+    font-size: 17px;
+  }
+
+  .whale-runtime-lane > header {
+    font-size: 14px;
+  }
+
+  .whale-runtime-lane > header small,
+.whale-runtime-lane article > span,
+.whale-runtime-lane article small {
+    font-size: 11px;
+  }
+
+  .whale-runtime-lane article strong {
+    font-size: 15px;
+  }
+
+  .whale-shutdown-path {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    margin-top: 28px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+
+  .gallery-image-stage--diagram .whale-diagram,
+.gallery-diagram-view:has(.whale-diagram),
+.gallery-image-drag-layer:has(.whale-diagram) {
+    min-height: 1720px;
+  }
+
+  .whale-cli-strip {
+    grid-template-columns: 1fr;
+  }
+
+  .whale-cli-strip > span + span,
+.whale-cli-strip > span:nth-child(3),
+.whale-cli-strip > b {
+    border-top: 1px solid var(--line);
+    border-left: 0;
+  }
+
+  .whale-cli-strip > b {
+    min-height: 52px;
+  }
+
+  .whale-direction-split article {
+    grid-template-columns: 1fr auto;
+  }
+
+  .whale-direction-split article > strong {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+
+  .whale-direction-split article > small {
+    grid-column: auto;
+    text-align: left;
+  }
+
+  .whale-direction-split article > small + small {
+    grid-column: 2;
+  }
+
+  .whale-state-schema {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .whale-state-schema span:nth-child(3) {
+    border-top: 1px solid var(--line);
+  }
+
+  .whale-position-card dl {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .whale-position-card dl > div:nth-child(n + 3) {
+    border-top: 1px solid var(--line);
+  }
+
+  .whale-position-card dl > div:not(:nth-child(3n + 1)) {
+    border-left: 0;
+  }
+
+  .whale-position-card dl > div:nth-child(even) {
+    border-left: 1px solid var(--line);
+  }
+
+  .whale-runtime-lanes {
+    grid-template-columns: 1fr;
+  }
+
+  .whale-runtime-lane > div {
+    grid-template-columns: 1fr;
+  }
+
+  .whale-runtime-lane article + article {
+    border-top: 1px solid var(--line);
+    border-left: 0;
+  }
+
+  .whale-runtime-lane article {
+    padding: 16px;
+  }
+
+  .whale-shutdown-path {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .whale-shutdown-path i {
+    width: 1px;
+    height: 14px;
+    margin-left: 5px;
+  }
+}

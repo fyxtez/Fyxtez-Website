@@ -1,0 +1,319 @@
+/* Styles owned by Home. */
+
+.approach-copy h2,
+.contact-panel h2 {
+  margin: 0;
+  font-weight: 540;
+  letter-spacing: -0.052em;
+}
+
+.approach-copy h2,
+.contact-panel h2 {
+  font-size: clamp(38px, 4.2vw, 62px);
+  line-height: 1.04;
+}
+
+.expertise-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.expertise-card {
+  display: flex;
+  min-height: 390px;
+  flex-direction: column;
+  padding: 36px;
+  background: rgba(0, 0, 0, 0.08);
+  transition: background 200ms ease;
+}
+
+.expertise-card + .expertise-card {
+  border-left: 1px solid var(--line);
+}
+
+.expertise-card:hover {
+  background: var(--surface-hover);
+}
+
+.card-index {
+  color: var(--accent);
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: 13px;
+  letter-spacing: 0.12em;
+}
+
+.expertise-card h3 {
+  max-width: 340px;
+  margin: 54px 0 18px;
+  font-size: 30px;
+  font-weight: 570;
+  letter-spacing: -0.035em;
+  line-height: 1.18;
+}
+
+.expertise-card p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 17px;
+  line-height: 1.7;
+}
+
+.section--approach {
+  display: grid;
+  align-items: start;
+  grid-template-columns: 1fr 0.9fr;
+  gap: clamp(72px, 9vw, 150px);
+}
+
+.approach-copy > p:last-child {
+  max-width: 760px;
+  margin: 28px 0 0;
+  color: var(--muted);
+  font-size: 18px;
+  line-height: 1.8;
+}
+
+.principles-list {
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--line);
+  list-style: none;
+}
+
+.principles-list li {
+  display: grid;
+  min-height: 78px;
+  align-items: center;
+  grid-template-columns: 54px 1fr;
+  border-bottom: 1px solid var(--line);
+  color: #d1d1cc;
+  font-size: 17px;
+}
+
+.principles-list span {
+  color: var(--accent);
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: 12px;
+}
+
+.contact-panel {
+  display: grid;
+  align-items: center;
+  grid-template-columns: minmax(0, 1fr) minmax(340px, 430px);
+  gap: clamp(64px, 8vw, 150px);
+  margin-bottom: 110px;
+  padding-right: clamp(44px, 5vw, 88px);
+  padding-left: clamp(44px, 5vw, 88px);
+  border: 1px solid var(--line-strong);
+  background: linear-gradient(105deg, rgba(245, 166, 35, 0.1), rgba(255, 255, 255, 0.025) 46%, rgba(255, 255, 255, 0.01));
+}
+
+.contact-copy {
+  max-width: 860px;
+}
+
+.contact-copy > p:last-child {
+  max-width: 780px;
+  margin: 22px 0 0;
+  color: var(--muted);
+  font-size: 18px;
+  line-height: 1.7;
+}
+
+.contact-card {
+  overflow: hidden;
+  width: 100%;
+  border: 1px solid var(--line-strong);
+  background: rgba(12, 14, 18, 0.8);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.22);
+}
+
+.contact-card-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 20px;
+  border-bottom: 1px solid var(--line);
+}
+
+.contact-card-header > div {
+  min-width: 0;
+}
+
+.contact-card-header strong,
+.contact-card-header span {
+  display: block;
+}
+
+.contact-card-header strong {
+  font-size: 16px;
+  font-weight: 680;
+}
+
+.contact-card-header > div > span {
+  margin-top: 4px;
+  color: var(--dim);
+  font-size: 12px;
+}
+
+.contact-method {
+  display: grid;
+  min-height: 78px;
+  align-items: center;
+  grid-template-columns: 38px minmax(0, 1fr) 56px;
+  gap: 14px;
+  padding: 12px 20px;
+  border-bottom: 1px solid var(--line);
+  text-decoration: none;
+  transition: background 180ms ease;
+}
+
+.contact-method:last-child {
+  border-bottom: 0;
+}
+
+.contact-method--static {
+  cursor: default;
+}
+
+.contact-method:hover,
+.contact-method:focus-visible {
+  background: rgba(255, 255, 255, 0.045);
+}
+
+.contact-method-icon {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  border-radius: 5px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 15px;
+}
+
+.contact-method-icon--telegram {
+  background: rgba(45, 160, 214, 0.14);
+  color: #55b7e8;
+}
+
+.contact-method-icon--linkedin {
+  background: rgba(10, 102, 194, 0.15);
+  color: #69aee9;
+}
+
+.contact-method-icon svg {
+  width: 17px;
+  height: 17px;
+}
+
+.contact-method small,
+.contact-method strong {
+  display: block;
+}
+
+.contact-method small {
+  margin-bottom: 5px;
+  color: var(--dim);
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+}
+
+.contact-method strong {
+  overflow: hidden;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: 14px;
+  font-weight: 500;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.contact-method-arrow {
+  justify-self: end;
+  color: var(--dim);
+  font-size: 13px;
+  transition: color 180ms ease, transform 180ms ease;
+}
+
+.contact-method-note {
+  justify-self: end;
+  color: var(--dim);
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.contact-method:hover .contact-method-arrow,
+.contact-method:focus-visible .contact-method-arrow {
+  color: var(--accent);
+  transform: translate(2px, -2px);
+}
+
+#contact {
+  scroll-margin-top: 104px;
+}
+
+@media (max-width: 1100px) {
+
+  .expertise-card {
+    padding: 28px;
+  }
+
+  .contact-panel {
+    padding-right: 42px;
+    padding-left: 42px;
+  }
+}
+
+@media (max-width: 800px) {
+
+  .expertise-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .expertise-card {
+    min-height: 330px;
+  }
+
+  .expertise-card + .expertise-card {
+    border-top: 1px solid var(--line);
+    border-left: 0;
+  }
+
+  .section--approach {
+    grid-template-columns: 1fr;
+    gap: 58px;
+  }
+
+  .contact-panel {
+    align-items: flex-start;
+    grid-template-columns: 1fr;
+    padding: 70px 34px;
+  }
+
+  .contact-card {
+    max-width: 460px;
+  }
+}
+
+@media (max-width: 480px) {
+
+  .approach-copy h2,
+.contact-panel h2 {
+    font-size: 38px;
+  }
+
+  .expertise-card {
+    min-height: 320px;
+    padding: 26px 22px;
+  }
+
+  .contact-panel {
+    margin-bottom: 70px;
+    padding: 58px 24px;
+  }
+}

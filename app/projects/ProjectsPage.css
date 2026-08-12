@@ -1,0 +1,87 @@
+/* Styles owned by ProjectsPage. */
+
+.projects-hero h1 {
+  margin: 0;
+  font-weight: 540;
+  letter-spacing: -0.052em;
+}
+
+.projects-main {
+  min-height: calc(100vh - 262px);
+}
+
+.projects-hero {
+  display: grid;
+  align-items: end;
+  grid-template-columns: 1.25fr 0.75fr;
+  gap: 80px;
+  padding: 112px 0 96px;
+}
+
+.projects-hero h1 {
+  max-width: 820px;
+  font-size: clamp(62px, 7.2vw, 110px);
+  line-height: 0.92;
+}
+
+.projects-hero h1 span {
+  color: #85857f;
+}
+
+.projects-hero-copy {
+  padding-bottom: 8px;
+}
+
+.projects-hero-copy > p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 18px;
+  line-height: 1.75;
+}
+
+.projects-count {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 28px;
+  color: var(--dim);
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: 12px;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+
+.projects-count strong {
+  color: var(--accent);
+  font-size: 25px;
+  font-weight: 500;
+}
+
+.project-route-summary .tag-list {
+  margin: 30px 0 18px;
+  padding: 0;
+}
+
+.project-route-summary .button {
+  margin-top: 28px;
+}
+
+@media (max-width: 800px) {
+
+  .projects-hero {
+    grid-template-columns: 1fr;
+    gap: 42px;
+    padding: 82px 0 76px;
+  }
+
+  .projects-hero h1 {
+    font-size: clamp(58px, 15vw, 92px);
+  }
+}
+
+@media (max-width: 480px) {
+
+  .projects-hero h1 {
+    font-size: 56px;
+  }
+}

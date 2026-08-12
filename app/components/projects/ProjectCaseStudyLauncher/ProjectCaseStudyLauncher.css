@@ -1,0 +1,16 @@
+/* Styles owned by ProjectCaseStudyLauncher. */
+
+.gallery-loading-backdrop {
+  position: fixed;
+  z-index: 200;
+  inset: 0;
+  display: grid;
+  background: rgba(0, 0, 0, 0.88);
+  color: var(--accent);
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  place-items: center;
+  text-transform: uppercase;
+  backdrop-filter: blur(12px);
+}

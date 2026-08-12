@@ -1,0 +1,494 @@
+/* Styles owned by MacroImpactDiagram. */
+
+.macro-impact-diagram {
+  min-height: 100%;
+  background:
+    radial-gradient(circle at 76% 17%, rgba(245, 166, 35, 0.075), transparent 31%),
+    linear-gradient(rgba(255, 255, 255, 0.018) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.018) 1px, transparent 1px);
+  background-size: auto, 34px 34px, 34px 34px;
+}
+
+.macro-impact-source-strip,
+.macro-impact-flow,
+.macro-impact-timeline,
+.macro-impact-output-grid,
+.macro-impact-privacy-strip {
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+}
+
+.macro-impact-source-strip {
+  display: grid;
+  margin-top: clamp(22px, 2.4vw, 34px);
+  border: 1px solid var(--line-strong);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  background: rgba(8, 9, 9, 0.88);
+}
+
+.macro-impact-source-strip > span {
+  display: flex;
+  min-width: 0;
+  min-height: 68px;
+  justify-content: center;
+  flex-direction: column;
+  padding: 12px 16px;
+}
+
+.macro-impact-source-strip > span + span {
+  border-left: 1px solid var(--line);
+}
+
+.macro-impact-source-strip small {
+  color: var(--dim);
+  font-size: 11px;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.macro-impact-source-strip strong {
+  margin-top: 7px;
+  overflow-wrap: anywhere;
+  color: var(--text);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 15px;
+  line-height: 1.25;
+}
+
+.macro-impact-flow {
+  display: grid;
+  margin-top: clamp(20px, 2.2vw, 30px);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.macro-impact-stage {
+  position: relative;
+  display: flex;
+  min-width: 0;
+  min-height: 190px;
+  flex-direction: column;
+  padding: clamp(16px, 1.4vw, 21px);
+  border: 1px solid var(--line-strong);
+  background: rgba(8, 9, 9, 0.92);
+}
+
+.macro-impact-stage:not(:last-child)::after {
+  position: absolute;
+  z-index: 2;
+  top: 50%;
+  right: -18px;
+  width: 23px;
+  height: 1px;
+  background: var(--accent-line);
+  content: "";
+}
+
+.macro-impact-stage--accent {
+  border-color: rgba(245, 166, 35, 0.58);
+  background: linear-gradient(145deg, rgba(245, 166, 35, 0.11), rgba(8, 9, 9, 0.95) 68%);
+}
+
+.macro-impact-stage > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.macro-impact-stage > div span,
+.macro-impact-stage > div small {
+  font-size: 11px;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.macro-impact-stage > div span {
+  color: var(--accent);
+}
+
+.macro-impact-stage > div small {
+  color: var(--dim);
+  text-align: right;
+}
+
+.macro-impact-stage > strong {
+  margin-top: auto;
+  color: var(--text);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: clamp(20px, 1.55vw, 25px);
+  letter-spacing: -0.035em;
+  line-height: 1.08;
+}
+
+.macro-impact-stage > p {
+  margin: 10px 0 0;
+  color: var(--muted);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: clamp(14px, 0.92vw, 16px);
+  line-height: 1.48;
+}
+
+.macro-impact-timeline {
+  margin-top: 18px;
+  padding: 0 18px 16px;
+  border: 1px solid var(--line-strong);
+  background: rgba(8, 9, 9, 0.9);
+}
+
+.macro-impact-timeline > header {
+  display: flex;
+  min-height: 58px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  border-bottom: 1px solid var(--line);
+}
+
+.macro-impact-timeline > header div {
+  display: flex;
+  flex-direction: column;
+}
+
+.macro-impact-timeline > header small {
+  color: var(--accent);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.macro-impact-timeline > header strong {
+  margin-top: 4px;
+  color: var(--text);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 15px;
+}
+
+.macro-impact-timeline code {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.macro-impact-window-grid {
+  display: grid;
+  padding: 20px 0 16px;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+}
+
+.macro-impact-window-grid article {
+  position: relative;
+  display: grid;
+  min-width: 0;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  column-gap: 9px;
+  padding-right: 10px;
+}
+
+.macro-impact-window-grid article + article {
+  padding-left: 10px;
+}
+
+.macro-impact-window-grid span {
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.macro-impact-window-grid i {
+  position: relative;
+  height: 1px;
+  background: var(--line-strong);
+}
+
+.macro-impact-window-grid i::before {
+  position: absolute;
+  top: -4px;
+  left: 0;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 10px rgba(245, 166, 35, 0.52);
+  content: "";
+}
+
+.macro-impact-window-grid .is-baseline span,
+.macro-impact-window-grid .is-baseline small {
+  color: var(--accent);
+}
+
+.macro-impact-window-grid small {
+  grid-column: 1 / -1;
+  margin-top: 9px;
+  color: var(--dim);
+  font-size: 10px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.macro-impact-timeline > p {
+  margin: 0;
+  color: var(--muted);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.macro-impact-output-grid {
+  display: grid;
+  margin-top: 18px;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.macro-impact-output-grid > section {
+  min-width: 0;
+  border: 1px solid var(--line-strong);
+  background: rgba(8, 9, 9, 0.9);
+}
+
+.macro-impact-output-grid__accent {
+  border-color: rgba(245, 166, 35, 0.48) !important;
+}
+
+.macro-impact-output-grid header {
+  display: flex;
+  min-height: 44px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 15px;
+  border-bottom: 1px solid var(--line);
+  gap: 12px;
+  text-transform: uppercase;
+}
+
+.macro-impact-output-grid header span {
+  color: var(--text);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.macro-impact-output-grid header small {
+  color: var(--dim);
+  font-size: 10px;
+  text-align: right;
+}
+
+.macro-impact-runtime-steps,
+.macro-impact-view-grid {
+  display: grid;
+  padding: 14px;
+  gap: 8px;
+}
+
+.macro-impact-runtime-steps span,
+.macro-impact-view-grid span {
+  display: flex;
+  min-height: 42px;
+  align-items: center;
+  padding: 9px 11px;
+  border: 1px solid var(--line);
+  color: var(--muted);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  line-height: 1.35;
+}
+
+.macro-impact-runtime-steps b {
+  margin-right: 11px;
+  color: var(--accent);
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: 11px;
+}
+
+.macro-impact-view-grid {
+  grid-template-columns: 1fr 1fr;
+}
+
+.macro-impact-view-grid span {
+  justify-content: center;
+  text-align: center;
+}
+
+.macro-impact-privacy-strip {
+  display: grid;
+  margin-top: auto;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+  grid-template-columns: repeat(3, auto) 1fr;
+  align-items: center;
+  gap: 22px;
+  color: var(--dim);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.macro-impact-privacy-strip span {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.macro-impact-privacy-strip i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #5bc889;
+  box-shadow: 0 0 8px rgba(91, 200, 137, 0.45);
+}
+
+.macro-impact-privacy-strip strong {
+  color: var(--accent);
+  text-align: right;
+}
+
+@media (max-width: 1400px) and (min-width: 801px) {
+  .macro-impact-diagram {
+    min-height: 1110px;
+  }
+
+  .macro-impact-flow {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .macro-impact-stage:not(:last-child)::after {
+    display: none;
+  }
+
+  .macro-impact-privacy-strip {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .macro-impact-privacy-strip strong {
+    text-align: left;
+  }
+}
+
+@media (max-width: 800px) {
+  .gallery-image-stage--diagram .macro-impact-diagram,
+.gallery-diagram-view:has(.macro-impact-diagram),
+.gallery-image-drag-layer:has(.macro-impact-diagram) {
+    min-height: 2400px;
+  }
+
+  .macro-impact-diagram {
+    padding: 24px 20px 40px;
+  }
+
+  .macro-impact-source-strip,
+.macro-impact-flow,
+.macro-impact-output-grid,
+.macro-impact-privacy-strip {
+    grid-template-columns: 1fr;
+  }
+
+  .macro-impact-source-strip > span {
+    min-height: 75px;
+    padding: 14px 16px;
+  }
+
+  .macro-impact-source-strip > span + span {
+    border-top: 1px solid var(--line);
+    border-left: 0;
+  }
+
+  .macro-impact-source-strip small,
+.macro-impact-stage > div span,
+.macro-impact-stage > div small,
+.macro-impact-timeline > header small,
+.macro-impact-output-grid header span,
+.macro-impact-output-grid header small,
+.macro-impact-privacy-strip {
+    font-size: 12px;
+  }
+
+  .macro-impact-source-strip strong {
+    font-size: 17px;
+  }
+
+  .macro-impact-stage {
+    min-height: 180px;
+    padding: 20px;
+  }
+
+  .macro-impact-stage:not(:last-child)::after {
+    display: none;
+  }
+
+  .macro-impact-stage > strong {
+    font-size: 24px;
+  }
+
+  .macro-impact-stage > p,
+.macro-impact-timeline > p,
+.macro-impact-runtime-steps span,
+.macro-impact-view-grid span {
+    font-size: 16px;
+  }
+
+  .macro-impact-timeline {
+    padding: 0 16px 18px;
+  }
+
+  .macro-impact-timeline > header {
+    align-items: flex-start;
+    justify-content: center;
+    flex-direction: column;
+    padding: 14px 0;
+  }
+
+  .macro-impact-timeline > header strong {
+    font-size: 17px;
+  }
+
+  .macro-impact-timeline code {
+    font-size: 12px;
+    overflow-wrap: anywhere;
+  }
+
+  .macro-impact-window-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    row-gap: 22px;
+  }
+
+  .macro-impact-window-grid article + article {
+    padding-left: 0;
+  }
+
+  .macro-impact-window-grid span {
+    font-size: 16px;
+  }
+
+  .macro-impact-window-grid small {
+    font-size: 11px;
+  }
+
+  .macro-impact-output-grid header {
+    min-height: 54px;
+  }
+
+  .macro-impact-view-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .macro-impact-privacy-strip {
+    align-items: flex-start;
+    gap: 13px;
+  }
+
+  .macro-impact-privacy-strip strong {
+    margin-top: 4px;
+    font-size: 13px;
+    line-height: 1.5;
+    text-align: left;
+  }
+}
+
+@media (max-width: 430px) {
+  .gallery-image-stage--diagram .macro-impact-diagram,
+.gallery-diagram-view:has(.macro-impact-diagram),
+.gallery-image-drag-layer:has(.macro-impact-diagram) {
+    min-height: 2540px;
+  }
+}

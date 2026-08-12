@@ -1,0 +1,954 @@
+/* Styles owned by ProjectGallery. */
+
+.gallery-backdrop {
+  position: fixed;
+  z-index: 200;
+  inset: 0;
+  display: grid;
+  padding: 18px;
+  background: rgba(0, 0, 0, 0.82);
+  place-items: center;
+  backdrop-filter: blur(12px);
+}
+
+.project-gallery {
+  position: relative;
+  display: grid;
+  overflow: hidden;
+  width: min(1740px, 100%);
+  height: min(920px, calc(100dvh - 36px));
+  grid-template-columns: minmax(0, 1.7fr) minmax(340px, 0.62fr);
+  border: 1px solid var(--line-strong);
+  background: #080909;
+  box-shadow: 0 40px 120px rgba(0, 0, 0, 0.58);
+}
+
+.gallery-visual {
+  position: relative;
+  display: grid;
+  min-width: 0;
+  padding: 72px 44px 44px;
+  border-right: 1px solid var(--line);
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.027) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.027) 1px, transparent 1px),
+    radial-gradient(circle at 30% 42%, rgba(245, 166, 35, 0.055), transparent 36%),
+    #070808;
+  background-size: 42px 42px, 42px 42px, auto, auto;
+  place-items: center;
+  cursor: grab;
+  touch-action: pan-y;
+  user-select: none;
+}
+
+.gallery-visual:active {
+  cursor: grabbing;
+}
+
+.gallery-visual.is-dragging {
+  cursor: grabbing;
+}
+
+.gallery-visual.is-detail-mode {
+  cursor: move;
+  touch-action: none;
+}
+
+.gallery-visual.is-detail-mode.is-dragging {
+  cursor: grabbing;
+}
+
+.gallery-kicker {
+  position: absolute;
+  top: 26px;
+  left: 30px;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  margin: 0;
+  color: var(--accent);
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.gallery-kicker::before {
+  width: 23px;
+  height: 1px;
+  background: currentColor;
+  content: "";
+}
+
+.gallery-image-frame {
+  overflow: hidden;
+  width: 100%;
+  height: min(72vh, 720px);
+  border: 1px solid var(--line-strong);
+  background: #080909;
+  box-shadow: 0 26px 70px rgba(0, 0, 0, 0.32);
+}
+
+.gallery-window-bar {
+  display: flex;
+  height: 44px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 15px;
+  border-bottom: 1px solid var(--line);
+  color: var(--dim);
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.gallery-window-title {
+  overflow: hidden;
+  min-width: 0;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.gallery-window-actions {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 13px;
+}
+
+.gallery-window-dots {
+  display: flex;
+  gap: 5px;
+}
+
+.gallery-window-dots i {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #575752;
+}
+
+.gallery-window-dots i:first-child {
+  background: var(--accent);
+}
+
+.gallery-image-stage {
+  position: relative;
+  overflow: hidden;
+  height: calc(100% - 44px);
+}
+
+.gallery-image-ghost {
+  position: absolute;
+  z-index: 1;
+  inset: 10px;
+  overflow: hidden;
+  border: 1px solid rgba(245, 166, 35, 0.18);
+  background: #0b0c0c;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.48);
+  filter: grayscale(0.35) brightness(0.58);
+  opacity: 0.16;
+  pointer-events: none;
+  transition:
+    opacity 140ms ease,
+    transform 220ms cubic-bezier(0.2, 0.72, 0.2, 1);
+}
+
+.gallery-image-ghost--previous {
+  transform: translate3d(-18px, 12px, 0) scale(0.955);
+}
+
+.gallery-image-ghost--next {
+  opacity: 0.24;
+  transform: translate3d(18px, 7px, 0) scale(0.972);
+}
+
+.gallery-image-ghost--previous.is-active {
+  transform: translateX(-12px) scale(0.97);
+  opacity: 0.48;
+}
+
+.gallery-image-ghost--next.is-active {
+  transform: translateX(12px) scale(0.97);
+  opacity: 0.48;
+}
+
+.gallery-image-drag-layer {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  background: #080909;
+  box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+  transform-origin: center;
+  transition:
+    transform 160ms cubic-bezier(0.2, 0.72, 0.2, 1),
+    opacity 200ms ease,
+    box-shadow 180ms ease;
+  will-change: transform, opacity, box-shadow;
+}
+
+.gallery-image-stage--stacked .gallery-image-drag-layer {
+  inset: 7px 20px 17px 7px;
+  border: 1px solid rgba(255, 255, 255, 0.055);
+  box-shadow: 10px 12px 34px rgba(0, 0, 0, 0.4);
+}
+
+.gallery-visual.is-detail-mode .gallery-image-ghost,
+.gallery-visual.is-detail-mode .gallery-stack-indicator {
+  opacity: 0;
+}
+
+.gallery-visual.is-detail-mode .gallery-image-stage--stacked .gallery-image-drag-layer {
+  inset: 0;
+}
+
+.gallery-stack-indicator {
+  display: grid;
+  min-width: 148px;
+  min-height: 34px;
+  grid-template-columns: 7px 7px 1fr;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 11px;
+  border: 1px solid rgba(245, 166, 35, 0.52);
+  background: rgba(245, 166, 35, 0.055);
+  color: var(--muted);
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  pointer-events: none;
+  backdrop-filter: blur(8px);
+  transition: opacity 160ms ease;
+}
+
+.gallery-stack-indicator > i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #555550;
+}
+
+.gallery-stack-indicator > i:first-child {
+  background: var(--accent);
+  box-shadow: 0 0 8px rgba(245, 166, 35, 0.58);
+}
+
+.gallery-stack-indicator b,
+.gallery-stack-indicator small {
+  grid-column: 3;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  line-height: 1.15;
+  text-transform: uppercase;
+}
+
+.gallery-stack-indicator b {
+  grid-row: 1;
+  color: var(--text);
+}
+
+.gallery-stack-indicator small {
+  grid-row: 2;
+  color: var(--accent);
+  font-size: 12px;
+}
+
+.gallery-image-drag-layer.is-dragging {
+  box-shadow: 0 18px 52px rgba(0, 0, 0, 0.52);
+  transition: none;
+}
+
+.gallery-image-drag-layer.is-detail-mode .gallery-image {
+  filter: brightness(1.1) contrast(1.05);
+}
+
+.gallery-drag-cue {
+  position: absolute;
+  z-index: 3;
+  top: 50%;
+  padding: 9px 11px;
+  border: 1px solid var(--accent-line);
+  background: rgba(7, 8, 8, 0.84);
+  color: var(--accent);
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  line-height: 1;
+  text-transform: uppercase;
+  opacity: 0;
+  pointer-events: none;
+  backdrop-filter: blur(8px);
+  transition:
+    opacity 120ms ease,
+    transform 160ms cubic-bezier(0.2, 0.72, 0.2, 1);
+}
+
+.gallery-drag-cue--previous {
+  left: 14px;
+  transform: translate(-8px, -50%);
+}
+
+.gallery-drag-cue--next {
+  right: 14px;
+  transform: translate(8px, -50%);
+}
+
+.gallery-drag-cue.is-active {
+  transform: translate(0, -50%);
+  opacity: 1;
+}
+
+.gallery-zoom-status {
+  position: absolute;
+  z-index: 5;
+  bottom: 12px;
+  left: 12px;
+  display: inline-flex;
+  min-width: 48px;
+  min-height: 30px;
+  align-items: center;
+  justify-content: center;
+  padding: 0 9px;
+  border: 1px solid var(--line);
+  background: rgba(7, 8, 8, 0.82);
+  color: var(--muted);
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  pointer-events: none;
+  backdrop-filter: blur(8px);
+}
+
+.gallery-visual.is-detail-mode .gallery-zoom-status {
+  border-color: var(--accent-line);
+  color: var(--accent);
+}
+
+.gallery-detail-toggle {
+  position: absolute;
+  z-index: 5;
+  right: 12px;
+  bottom: 12px;
+  display: none;
+  min-height: 38px;
+  align-items: center;
+  justify-content: center;
+  padding: 0 12px;
+  border: 1px solid var(--accent-line);
+  background: rgba(7, 8, 8, 0.88);
+  color: var(--accent);
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+}
+
+.gallery-detail-toggle:hover,
+.gallery-detail-toggle:focus-visible,
+.gallery-detail-toggle[aria-pressed="true"] {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: #17120a;
+}
+
+.gallery-image {
+  object-fit: contain;
+  padding: clamp(18px, 2vw, 34px);
+  pointer-events: none;
+}
+
+.gallery-image-stage--mobile .gallery-image {
+  padding: 30px 31%;
+}
+
+.gallery-image--next {
+  animation: gallery-next-in 420ms cubic-bezier(0.2, 0.72, 0.2, 1) both;
+}
+
+.gallery-image--previous {
+  animation: gallery-previous-in 420ms cubic-bezier(0.2, 0.72, 0.2, 1) both;
+}
+
+.gallery-details {
+  display: flex;
+  overflow-y: auto;
+  min-width: 0;
+  flex-direction: column;
+  padding: 28px 32px 24px;
+  scrollbar-color: var(--line-strong) transparent;
+}
+
+.gallery-close {
+  display: inline-flex;
+  min-width: 72px;
+  min-height: 44px;
+  align-items: center;
+  justify-content: flex-end;
+  align-self: flex-end;
+  padding: 8px 0;
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.gallery-close span {
+  margin-left: 9px;
+  color: var(--dim);
+}
+
+.gallery-close:hover,
+.gallery-close:focus-visible {
+  color: var(--text);
+}
+
+.gallery-close--secondary {
+  display: none;
+}
+
+.gallery-project-copy {
+  margin-top: clamp(38px, 5vh, 54px);
+}
+
+.gallery-project-copy > p:first-child {
+  margin: 0;
+  color: var(--accent);
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.gallery-project-copy h2 {
+  margin: 16px 0 0;
+  font-size: clamp(42px, 4vw, 66px);
+  font-weight: 520;
+  letter-spacing: -0.055em;
+  line-height: 0.93;
+}
+
+.gallery-project-copy > span {
+  display: block;
+  margin-top: 16px;
+  color: var(--dim);
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.gallery-project-copy > p:last-of-type {
+  margin: 22px 0 0;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.65;
+}
+
+.gallery-project-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin: 22px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.gallery-project-tags li {
+  padding: 7px 9px;
+  border: 1px solid var(--line);
+  color: #8d8d87;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: 9px;
+  letter-spacing: 0.065em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.gallery-position {
+  display: grid;
+  align-items: end;
+  grid-template-columns: auto auto 1fr auto;
+  gap: 12px;
+  margin-top: 30px;
+}
+
+.gallery-position strong {
+  color: var(--accent);
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: 29px;
+  font-weight: 500;
+}
+
+.gallery-position > span,
+.gallery-position b {
+  color: var(--text);
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: 21px;
+  font-weight: 400;
+}
+
+.gallery-position small {
+  padding-bottom: 4px;
+  color: var(--dim);
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: 8px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.gallery-progress {
+  display: flex;
+  min-height: 44px;
+  align-items: center;
+  gap: 5px;
+  margin: 1px 0 -10px;
+}
+
+.gallery-progress button {
+  position: relative;
+  width: 100%;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.gallery-progress button::after {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  left: 0;
+  height: 2px;
+  background: var(--line-strong);
+  content: "";
+  transform: translateY(-50%);
+  transition: background 180ms ease;
+}
+
+.gallery-progress button.is-active::after {
+  background: var(--accent);
+}
+
+.gallery-current-view {
+  margin-top: 22px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+}
+
+.gallery-current-view small,
+.gallery-current-view strong {
+  display: block;
+}
+
+.gallery-current-view small {
+  color: var(--dim);
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: 8px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.gallery-current-view strong {
+  margin-top: 9px;
+  font-size: 15px;
+  font-weight: 590;
+}
+
+.gallery-current-view p {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.gallery-controls {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 20px;
+}
+
+.gallery-controls button {
+  display: flex;
+  min-height: 46px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 14px;
+  border: 1px solid var(--line-strong);
+  background: rgba(255, 255, 255, 0.025);
+  color: var(--text);
+  font-size: 12px;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+.gallery-controls .gallery-next {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: #17120a;
+}
+
+.gallery-project-link {
+  display: flex;
+  min-height: 48px;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 10px;
+  padding: 0 13px;
+  border: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.gallery-project-link:hover,
+.gallery-project-link:focus-visible {
+  border-color: var(--accent-line);
+  color: var(--text);
+}
+
+.gallery-private-note,
+.gallery-hint {
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  text-transform: uppercase;
+}
+
+.gallery-private-note {
+  margin: 15px 0 0;
+  color: var(--dim);
+  font-size: 9px;
+  letter-spacing: 0.07em;
+}
+
+.gallery-hint {
+  margin: 16px 0 0;
+  color: #7f7f79;
+  font-size: 11px;
+  letter-spacing: 0.045em;
+  line-height: 1.5;
+}
+
+.gallery-image-stage--diagram {
+  background:
+    radial-gradient(circle at 48% 42%, rgba(245, 166, 35, 0.055), transparent 42%),
+    #080909;
+}
+
+.gallery-diagram-view {
+  width: 100%;
+  height: 100%;
+}
+
+.gallery-diagram-ghost {
+  display: flex;
+  height: 100%;
+  align-items: flex-start;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(28px, 4vw, 64px);
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+    #090a0a;
+  background-size: 34px 34px;
+}
+
+.gallery-diagram-ghost small {
+  color: var(--accent);
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.gallery-diagram-ghost strong {
+  max-width: 520px;
+  margin-top: 16px;
+  color: var(--text);
+  font-size: clamp(34px, 5vw, 70px);
+  font-weight: 520;
+  letter-spacing: -0.05em;
+  line-height: 0.95;
+}
+
+.gallery-diagram-ghost > span {
+  margin-top: 32px;
+  color: var(--accent);
+  font-size: 28px;
+}
+
+@keyframes gallery-next-in {
+  from {
+    opacity: 0;
+    transform: translateY(48px) scale(0.992);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes gallery-previous-in {
+  from {
+    opacity: 0;
+    transform: translateY(-48px) scale(0.992);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (max-width: 1100px) {
+
+  .project-gallery {
+    grid-template-columns: minmax(0, 1.45fr) minmax(330px, 0.65fr);
+  }
+
+  .gallery-visual {
+    padding-right: 28px;
+    padding-left: 28px;
+  }
+}
+
+@media (max-width: 800px) {
+
+  .gallery-backdrop {
+    padding: 0;
+  }
+
+  .project-gallery {
+    display: block;
+    overflow-y: auto;
+    width: 100%;
+    height: 100dvh;
+    border: 0;
+  }
+
+  .gallery-visual {
+    min-height: 58dvh;
+    padding: 64px 20px 24px;
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .gallery-image-frame {
+    height: min(50dvh, 570px);
+  }
+
+  .gallery-visual--diagram {
+    min-height: 76dvh;
+  }
+
+  .gallery-visual--diagram .gallery-image-frame {
+    height: 68dvh;
+  }
+
+  .gallery-image-stage--diagram {
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-color: var(--line-strong) transparent;
+  }
+
+  .gallery-image-stage--diagram .gallery-image-drag-layer {
+    min-height: 1280px;
+  }
+
+  .gallery-diagram-view {
+    height: auto;
+    min-height: 1280px;
+  }
+
+  .gallery-image-stage--stacked .gallery-image-drag-layer {
+    inset: 6px 15px 14px 5px;
+  }
+
+  .gallery-detail-toggle {
+    display: inline-flex;
+  }
+
+  .gallery-details {
+    overflow: visible;
+    padding: 34px 24px 28px;
+  }
+
+  .gallery-close--primary {
+    position: absolute;
+    z-index: 6;
+    top: 17px;
+    right: 20px;
+    padding: 9px 12px;
+    border: 1px solid var(--line);
+    background: rgba(7, 7, 7, 0.8);
+    backdrop-filter: blur(10px);
+  }
+
+  .gallery-project-copy {
+    margin-top: 0;
+  }
+
+  .gallery-project-copy h2 {
+    font-size: 52px;
+  }
+}
+
+@media (max-width: 480px) {
+
+  .gallery-visual {
+    min-height: 48dvh;
+    padding: 58px 12px 16px;
+  }
+
+  .gallery-kicker {
+    top: 23px;
+    left: 14px;
+  }
+
+  .gallery-close--primary {
+    right: 12px;
+  }
+
+  .gallery-image-frame {
+    height: 40dvh;
+  }
+
+  .gallery-visual--diagram .gallery-image-frame {
+    height: 72dvh;
+  }
+
+  .gallery-window-bar {
+    padding: 0 10px;
+    font-size: 8px;
+  }
+
+  .gallery-image {
+    padding: 10px;
+  }
+
+  .gallery-image-stage--mobile .gallery-image {
+    padding: 18px 27%;
+  }
+
+  .gallery-image-stage--diagram .gallery-image-drag-layer,
+.gallery-diagram-view {
+    min-height: 1500px;
+  }
+
+  .gallery-details {
+    padding: 30px 18px 24px;
+  }
+
+  .gallery-project-copy h2 {
+    font-size: 46px;
+  }
+
+  .gallery-controls button {
+    min-height: 48px;
+  }
+}
+
+@media (max-width: 500px) {
+  .gallery-close--secondary {
+    position: static;
+    display: flex;
+    width: 100%;
+    min-height: 48px;
+    align-items: center;
+    justify-content: space-between;
+    align-self: stretch;
+    margin-top: 10px;
+    padding: 0 13px;
+    border: 1px solid var(--line);
+    background: rgba(255, 255, 255, 0.025);
+    color: var(--muted);
+    font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0;
+    text-transform: none;
+    backdrop-filter: none;
+  }
+
+  .gallery-close--secondary:hover,
+.gallery-close--secondary:focus-visible {
+    border-color: var(--accent-line);
+    color: var(--text);
+  }
+
+  .gallery-close--secondary span {
+    margin-left: 12px;
+    color: var(--accent);
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  }
+}
+.gallery-image-frame,
+.gallery-image-stage,
+.gallery-image-drag-layer,
+.gallery-diagram-view {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.gallery-image-stage--diagram {
+  overflow-x: hidden;
+}
+
+@media (min-width: 801px) {
+  .gallery-image-stage--diagram {
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-color: rgba(245, 166, 35, 0.55) rgba(255, 255, 255, 0.035);
+    scrollbar-gutter: stable;
+    scrollbar-width: thin;
+  }
+
+  .gallery-image-stage--diagram::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .gallery-image-stage--diagram::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.035);
+  }
+
+  .gallery-image-stage--diagram::-webkit-scrollbar-thumb {
+    border: 2px solid #080909;
+    border-radius: 999px;
+    background: rgba(245, 166, 35, 0.58);
+  }
+
+  .gallery-image-stage--diagram .gallery-image-drag-layer {
+    inset: 0 0 auto;
+    width: 100%;
+    height: auto;
+    min-height: 100%;
+  }
+
+  .gallery-image-stage--diagram.gallery-image-stage--stacked .gallery-image-drag-layer {
+    inset: 7px 20px auto 7px;
+    width: auto;
+    min-height: calc(100% - 24px);
+  }
+
+  .gallery-image-stage--diagram .gallery-diagram-view,
+.gallery-image-stage--diagram .commandant-diagram {
+    height: auto;
+    min-height: 100%;
+  }
+
+  .gallery-image-stage--diagram .commandant-diagram {
+    overflow: visible;
+  }
+}

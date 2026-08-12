@@ -1,0 +1,20 @@
+/* Styles owned by LogoMark. */
+
+.brand-mark {
+  display: inline-grid;
+  flex: 0 0 auto;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  border: 1px solid var(--accent-line);
+  background: var(--accent);
+  color: #12100b;
+  box-shadow: 0 0 28px rgba(245, 166, 35, 0.12);
+}
+
+.brand-mark svg {
+  display: block;
+  width: 22px;
+  height: 22px;
+  fill: currentColor;
+}

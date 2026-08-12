@@ -1,8 +1,9 @@
-import FeaturedProjects from "./components/projects/FeaturedProjects";
-import Hero from "./components/hero/Hero";
-import LogoMark from "./components/logo/LogoMark";
-import SiteFooter from "./components/siteFooter/SiteFooter";
-import SiteHeader from "./components/siteHeader/SiteHeader";
+import "./Home.css";
+import FeaturedProjects from "./components/projects/FeaturedProjects/FeaturedProjects";
+import Hero from "./components/Hero/Hero";
+import LogoMark from "./components/LogoMark/LogoMark";
+import SiteFooter from "./components/SiteFooter/SiteFooter";
+import SiteHeader from "./components/SiteHeader/SiteHeader";
 
 const expertise = [
   {
