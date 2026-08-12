@@ -1,9 +1,10 @@
 "use client";
 
 import Image from "next/image";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import type { Project } from "../../data/projects";
+import { getProjectViews, type Project, type ProjectView } from "../../data/projects";
+import ProjectDiagram from "./ProjectDiagram";
 
 type ProjectGalleryProps = {
   project: Project | null;
@@ -27,6 +28,7 @@ export default function ProjectGallery({ project, onClose }: ProjectGalleryProps
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const galleryStageRef = useRef<HTMLDivElement>(null);
   const pointerStartRef = useRef<GalleryPointerStart | null>(null);
+  const views = useMemo(() => (project ? getProjectViews(project) : []), [project]);
 
   const resetDetailView = useCallback(() => {
     pointerStartRef.current = null;
@@ -43,15 +45,15 @@ export default function ProjectGallery({ project, onClose }: ProjectGalleryProps
 
   const move = useCallback(
     (step: 1 | -1) => {
-      if (!project?.images.length) return;
+      if (!views.length) return;
 
       resetDetailView();
       setDirection(step === 1 ? "next" : "previous");
       setActiveIndex((current) =>
-        (current + step + project.images.length) % project.images.length,
+        (current + step + views.length) % views.length,
       );
     },
-    [project, resetDetailView],
+    [resetDetailView, views.length],
   );
 
   useEffect(() => {
@@ -83,16 +85,19 @@ export default function ProjectGallery({ project, onClose }: ProjectGalleryProps
     };
   }, [closeGallery, move, project]);
 
-  if (typeof document === "undefined" || !project || project.images.length === 0) {
+  if (typeof document === "undefined" || !project || views.length === 0) {
     return null;
   }
 
-  const image = project.images[activeIndex];
-  const previousImage =
-    project.images[(activeIndex - 1 + project.images.length) % project.images.length];
-  const nextImage = project.images[(activeIndex + 1) % project.images.length];
+  const view = views[activeIndex];
+  const previousView = views[(activeIndex - 1 + views.length) % views.length];
+  const nextView = views[(activeIndex + 1) % views.length];
+  const isImageView = view.kind === "image";
+  const hasDiagrams = views.some((item) => item.kind === "diagram");
+  const hasImages = views.some((item) => item.kind === "image");
+  const isMixedCaseStudy = hasDiagrams && hasImages;
   const paddedIndex = String(activeIndex + 1).padStart(2, "0");
-  const paddedTotal = String(project.images.length).padStart(2, "0");
+  const paddedTotal = String(views.length).padStart(2, "0");
   const dragProgress = Math.min(Math.abs(dragOffset) / 170, 1);
   const maxZoom =
     project.slug === "fyxtez-terminal"
@@ -117,10 +122,11 @@ export default function ProjectGallery({ project, onClose }: ProjectGalleryProps
         aria-labelledby="gallery-project-title"
       >
         <div
-          className={`gallery-visual ${isDragging ? "is-dragging" : ""} ${
+          className={`gallery-visual ${hasDiagrams ? "gallery-visual--diagram" : ""} ${isDragging ? "is-dragging" : ""} ${
             isDetailMode ? "is-detail-mode" : ""
           }`}
           onWheel={(event) => {
+            if (!isImageView) return;
             if (event.deltaY === 0) return;
 
             event.preventDefault();
@@ -169,7 +175,7 @@ export default function ProjectGallery({ project, onClose }: ProjectGalleryProps
             const distanceX = event.clientX - pointerStartRef.current.x;
             const distanceY = event.clientY - pointerStartRef.current.y;
 
-            if (isDetailMode) {
+            if (isDetailMode && isImageView) {
               const stage = galleryStageRef.current;
               const maxPanX = stage ? ((zoomScale - 1) * stage.clientWidth) / 2 : 260;
               const maxPanY = stage ? ((zoomScale - 1) * stage.clientHeight) / 2 : 220;
@@ -211,24 +217,44 @@ export default function ProjectGallery({ project, onClose }: ProjectGalleryProps
             setDragOffset(0);
           }}
         >
-          <p className="gallery-kicker">Project gallery</p>
+          <p className="gallery-kicker">
+            {isMixedCaseStudy
+              ? "Visual + architecture case study"
+              : hasDiagrams
+                ? "Architecture case study"
+                : "Project gallery"}
+          </p>
 
           <div className="gallery-image-frame">
             <div className="gallery-window-bar">
-              <span>{project.slug.replaceAll("-", "_")} / {image.label}</span>
-              <span className="gallery-window-dots" aria-hidden="true">
-                <i />
-                <i />
-                <i />
+              <span className="gallery-window-title">
+                {project.slug.replaceAll("-", "_")} / {view.label}
+              </span>
+              <span className="gallery-window-actions">
+                {views.length > 1 ? (
+                  <span className="gallery-stack-indicator" aria-hidden="true">
+                    <i />
+                    <i />
+                    <b>{paddedTotal} views</b>
+                    <small>drag / swipe</small>
+                  </span>
+                ) : null}
+                <span className="gallery-window-dots" aria-hidden="true">
+                  <i />
+                  <i />
+                  <i />
+                </span>
               </span>
             </div>
             <div
               ref={galleryStageRef}
               className={`gallery-image-stage ${
                 project.slug === "exchange-positions" ? "gallery-image-stage--mobile" : ""
+              } ${view.kind === "diagram" ? "gallery-image-stage--diagram" : ""} ${
+                views.length > 1 ? "gallery-image-stage--stacked" : ""
               }`}
             >
-              {project.images.length > 1 ? (
+              {views.length > 1 ? (
                 <>
                   <div
                     className={`gallery-image-ghost gallery-image-ghost--previous ${
@@ -236,15 +262,7 @@ export default function ProjectGallery({ project, onClose }: ProjectGalleryProps
                     }`}
                     aria-hidden="true"
                   >
-                    <Image
-                      className="gallery-image"
-                      src={previousImage.src}
-                      alt=""
-                      fill
-                      draggable={false}
-                      unoptimized
-                      sizes="(max-width: 900px) 92vw, 68vw"
-                    />
+                    <GalleryGhost view={previousView} />
                   </div>
                   <div
                     className={`gallery-image-ghost gallery-image-ghost--next ${
@@ -252,15 +270,7 @@ export default function ProjectGallery({ project, onClose }: ProjectGalleryProps
                     }`}
                     aria-hidden="true"
                   >
-                    <Image
-                      className="gallery-image"
-                      src={nextImage.src}
-                      alt=""
-                      fill
-                      draggable={false}
-                      unoptimized
-                      sizes="(max-width: 900px) 92vw, 68vw"
-                    />
+                    <GalleryGhost view={nextView} />
                   </div>
                 </>
               ) : null}
@@ -283,17 +293,26 @@ export default function ProjectGallery({ project, onClose }: ProjectGalleryProps
                     : `translate3d(${dragOffset}px, 0, 0) scale(${1 - dragProgress * 0.018})`,
                 }}
               >
-                <Image
-                  key={`${project.slug}-${activeIndex}`}
-                  className={`gallery-image gallery-image--${direction}`}
-                  src={image.src}
-                  alt={image.alt}
-                  fill
-                  priority
-                  draggable={false}
-                  unoptimized
-                  sizes="(max-width: 500px) 240vw, (max-width: 900px) 140vw, 68vw"
-                />
+                {view.kind === "image" ? (
+                  <Image
+                    key={`${project.slug}-${activeIndex}`}
+                    className={`gallery-image gallery-image--${direction}`}
+                    src={view.src}
+                    alt={view.alt}
+                    fill
+                    priority
+                    draggable={false}
+                    unoptimized
+                    sizes="(max-width: 500px) 240vw, (max-width: 900px) 140vw, 68vw"
+                  />
+                ) : (
+                  <div
+                    key={`${project.slug}-${activeIndex}`}
+                    className={`gallery-diagram-view gallery-image--${direction}`}
+                  >
+                    <ProjectDiagram diagram={view.diagram} />
+                  </div>
+                )}
               </div>
               <span
                 className={`gallery-drag-cue gallery-drag-cue--next ${
@@ -303,24 +322,28 @@ export default function ProjectGallery({ project, onClose }: ProjectGalleryProps
               >
                 Next →
               </span>
-              <output className="gallery-zoom-status" aria-live="polite">
-                {Math.round(zoomScale * 100)}%
-              </output>
-              <button
-                className="gallery-detail-toggle"
-                type="button"
-                onPointerDown={(event) => event.stopPropagation()}
-                onClick={() => {
-                  pointerStartRef.current = null;
-                  setDragOffset(0);
-                  setIsDragging(false);
-                  setDetailPan({ x: 0, y: 0 });
-                  setZoomScale((current) => (current > 1.001 ? 1 : maxZoom));
-                }}
-                aria-pressed={isDetailMode}
-              >
-                {isDetailMode ? "Fit image −" : "Zoom details +"}
-              </button>
+              {isImageView ? (
+                <>
+                  <output className="gallery-zoom-status" aria-live="polite">
+                    {Math.round(zoomScale * 100)}%
+                  </output>
+                  <button
+                    className="gallery-detail-toggle"
+                    type="button"
+                    onPointerDown={(event) => event.stopPropagation()}
+                    onClick={() => {
+                      pointerStartRef.current = null;
+                      setDragOffset(0);
+                      setIsDragging(false);
+                      setDetailPan({ x: 0, y: 0 });
+                      setZoomScale((current) => (current > 1.001 ? 1 : maxZoom));
+                    }}
+                    aria-pressed={isDetailMode}
+                  >
+                    {isDetailMode ? "Fit image −" : "Zoom details +"}
+                  </button>
+                </>
+              ) : null}
             </div>
           </div>
         </div>
@@ -352,21 +375,21 @@ export default function ProjectGallery({ project, onClose }: ProjectGalleryProps
             <strong>{paddedIndex}</strong>
             <span>/</span>
             <b>{paddedTotal}</b>
-            <small>Screenshots</small>
+            <small>{hasDiagrams ? "Views" : "Screenshots"}</small>
           </div>
 
-          <div className="gallery-progress" aria-label="Choose screenshot">
-            {project.images.map((item, index) => (
+          <div className="gallery-progress" aria-label="Choose project view">
+            {views.map((item, index) => (
               <button
                 className={index === activeIndex ? "is-active" : undefined}
                 type="button"
-                key={item.src}
+                key={item.kind === "image" ? item.src : item.diagram}
                 onClick={() => {
                   resetDetailView();
                   setDirection(index > activeIndex ? "next" : "previous");
                   setActiveIndex(index);
                 }}
-                aria-label={`Show screenshot ${index + 1}: ${item.label}`}
+                aria-label={`Show view ${index + 1}: ${item.label}`}
                 aria-current={index === activeIndex ? "true" : undefined}
               />
             ))}
@@ -374,8 +397,8 @@ export default function ProjectGallery({ project, onClose }: ProjectGalleryProps
 
           <div className="gallery-current-view">
             <small>Current view</small>
-            <strong>{image.label}</strong>
-            <p>{image.caption}</p>
+            <strong>{view.label}</strong>
+            <p>{view.caption}</p>
           </div>
 
           <div className="gallery-controls">
@@ -397,7 +420,13 @@ export default function ProjectGallery({ project, onClose }: ProjectGalleryProps
               {project.linkLabel} <span aria-hidden="true">↗</span>
             </a>
           ) : (
-            <p className="gallery-private-note">Private system · Visual case study only</p>
+            <p className="gallery-private-note">
+              Private system · {isMixedCaseStudy
+                ? "Visual + architecture case study"
+                : hasDiagrams
+                  ? "Architecture case study"
+                  : "Visual case study only"}
+            </p>
           )}
 
           <button
@@ -410,7 +439,9 @@ export default function ProjectGallery({ project, onClose }: ProjectGalleryProps
           </button>
 
           <p className="gallery-hint">
-            {isDetailMode
+            {hasDiagrams
+              ? "Drag to change architecture view · Swipe on mobile"
+              : isDetailMode
               ? `Mouse wheel zoom · ${Math.round(zoomScale * 100)}% · Drag image to inspect`
               : "Mouse wheel zoom · Drag to change screenshot · Swipe or zoom on mobile"}
           </p>
@@ -418,5 +449,29 @@ export default function ProjectGallery({ project, onClose }: ProjectGalleryProps
       </section>
     </div>,
     document.body,
+  );
+}
+
+function GalleryGhost({ view }: { view: ProjectView }) {
+  if (view.kind === "image") {
+    return (
+      <Image
+        className="gallery-image"
+        src={view.src}
+        alt=""
+        fill
+        draggable={false}
+        unoptimized
+        sizes="(max-width: 900px) 92vw, 68vw"
+      />
+    );
+  }
+
+  return (
+    <div className="gallery-diagram-ghost">
+      <small>Architecture view</small>
+      <strong>{view.label}</strong>
+      <span aria-hidden="true">→</span>
+    </div>
   );
 }

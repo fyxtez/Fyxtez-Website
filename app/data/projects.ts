@@ -5,6 +5,31 @@ export type ProjectImage = {
   caption: string;
 };
 
+export type ProjectDiagramId =
+  | "commandant-control-path"
+  | "commandant-live-logs"
+  | "commandant-local-first"
+  | "discipline-execution-loop"
+  | "discipline-reset-engine"
+  | "discipline-local-persistence"
+  | "mordexel-signal-pipeline"
+  | "mordexel-sizing-engine"
+  | "mordexel-order-lifecycle"
+  | "solana-utility-flow"
+  | "strategy-research-architecture"
+  | "whale-live-ingestion"
+  | "whale-enrichment-report"
+  | "whale-runtime-resilience";
+
+export type ProjectView =
+  | ({ kind: "image" } & ProjectImage)
+  | {
+      kind: "diagram";
+      diagram: ProjectDiagramId;
+      label: string;
+      caption: string;
+    };
+
 export type Project = {
   slug: string;
   title: string;
@@ -16,7 +41,17 @@ export type Project = {
   access: string;
   featured: boolean;
   images: ProjectImage[];
+  views?: ProjectView[];
 };
+
+export function getProjectViews(project: Project): ProjectView[] {
+  const imageViews = project.images.map((image) => ({
+    kind: "image" as const,
+    ...image,
+  }));
+
+  return project.views ? [...imageViews, ...project.views] : imageViews;
+}
 
 export const projects: Project[] = [
   {
@@ -167,17 +202,221 @@ export const projects: Project[] = [
     ],
   },
   {
+    slug: "mordexel",
+    title: "Mordexel",
+    category: "Automated execution engine",
+    description:
+      "A modular, event-driven Rust engine that accepts authenticated external trade intents, applies execution policy and risk-aware sizing, and executes protected Binance Futures orders.",
+    tags: ["Rust", "Tokio", "Axum", "Binance Futures", "Event-driven", "Risk engine"],
+    href: null,
+    linkLabel: null,
+    access: "Private · Production execution",
+    featured: false,
+    images: [],
+    views: [
+      {
+        kind: "diagram",
+        diagram: "mordexel-signal-pipeline",
+        label: "Signal-to-decision pipeline",
+        caption:
+          "A private signal provider remains outside the public boundary. Mordexel begins at authenticated ingress, normalizes the payload, builds an identified TradeIntent, and routes it through an explicit approval or rejection policy.",
+      },
+      {
+        kind: "diagram",
+        diagram: "mordexel-sizing-engine",
+        label: "Constraint-aware sizing",
+        caption:
+          "Entry and stop distance, portfolio equity, configured risk limits, exchange leverage brackets, and symbol filters are combined into a rounded ExecutionPlan that must remain inside the allocated margin.",
+      },
+      {
+        kind: "diagram",
+        diagram: "mordexel-order-lifecycle",
+        label: "Protected order lifecycle",
+        caption:
+          "The executor sets leverage, submits the market entry, attaches a full-position stop, resolves the active take-profit strategy, and sends reduce-only exits through an HMAC-signed Binance transport.",
+      },
+    ],
+  },
+  {
+    slug: "strategy-dashboard",
+    title: "Strategy Dashboard",
+    category: "Strategy research & analytics",
+    description:
+      "A private research dashboard that turns structured trade histories into comparable evidence across exit models, timeframes, symbols, expectancy, risk, path outcomes, and equity behavior.",
+    tags: ["Rust", "Axum", "Next.js", "TypeScript", "Trading analytics", "Risk metrics"],
+    href: null,
+    linkLabel: null,
+    access: "Private · Research dashboard",
+    featured: false,
+    images: [
+      {
+        src: "/projects/strategy-dashboard/01-overview.png",
+        alt: "Strategy Dashboard overview showing performance, risk, and system health metrics",
+        label: "Strategy overview",
+        caption:
+          "A consolidated health view across total R, expectancy, win rate, profit factor, drawdown, streaks, adverse excursion, and rolling performance.",
+      },
+      {
+        src: "/projects/strategy-dashboard/02-expectancy.png",
+        alt: "Strategy Dashboard expectancy comparison across exit models and timeframes",
+        label: "Exit-model expectancy",
+        caption:
+          "Exit models are compared per timeframe through resolved and unresolved samples, total R, expectancy, win rate, and streak behavior.",
+      },
+      {
+        src: "/projects/strategy-dashboard/03-symbol-analysis.png",
+        alt: "Strategy Dashboard symbol analytics table with performance and stability metrics",
+        label: "Symbol-level evidence",
+        caption:
+          "Per-symbol analysis exposes hit rates, expectancy, path probabilities, return contribution, sample share, and stability instead of hiding variance inside one aggregate result.",
+      },
+      {
+        src: "/projects/strategy-dashboard/04-trade-explorer.png",
+        alt: "Strategy Dashboard filtered trade history with lifecycle and target states",
+        label: "Inspectable trade history",
+        caption:
+          "The underlying trade history remains inspectable through symbol, timeframe, and lifecycle filters, with direction, entry, stop, target progress, and freshness visible per record.",
+      },
+    ],
+    views: [
+      {
+        kind: "diagram",
+        diagram: "strategy-research-architecture",
+        label: "Research system architecture",
+        caption:
+          "Telegram message history is normalized into ordered trade events, correlated into typed TradeRecords, exposed through a focused Axum boundary, and carried into Next.js research views without losing the underlying trade lifecycle.",
+      },
+    ],
+  },
+  {
     slug: "commandant",
     title: "Commandant",
     category: "Infrastructure control",
     description:
-      "A phone-first control surface for Linux services: start, stop, restart, inspect logs, and understand operational state in seconds.",
-    tags: ["Tauri", "Rust", "React", "systemd"],
+      "A local-first Android control surface for remote systemd services: act in seconds, follow live logs, and keep every host preset on the device.",
+    tags: ["Rust", "Tauri", "React", "russh", "systemd", "Android"],
     href: null,
     linkLabel: null,
-    access: "Private",
+    access: "Private · Personal production",
     featured: false,
     images: [],
+    views: [
+      {
+        kind: "diagram",
+        diagram: "commandant-control-path",
+        label: "One-tap control path",
+        caption:
+          "React invokes a restricted Tauri command; Rust loads the selected preset, opens a fresh SSH session, executes one allow-listed systemd action, and disconnects.",
+      },
+      {
+        kind: "diagram",
+        diagram: "commandant-live-logs",
+        label: "Live log stream",
+        caption:
+          "A dedicated russh channel follows journalctl and forwards each line into the React log viewer through Tauri events until the user closes the stream.",
+      },
+      {
+        kind: "diagram",
+        diagram: "commandant-local-first",
+        label: "Local-first design",
+        caption:
+          "Host presets, service mappings, private-key configuration, and action history remain in Android app-private storage—without a backend, cloud sync, or telemetry.",
+      },
+    ],
+  },
+  {
+    slug: "discipline-os",
+    title: "DisciplineOS",
+    category: "Daily execution system",
+    description:
+      "A focused local-first desktop system for recurring daily and weekly actions—organized by time of day, reset automatically, and kept entirely on the user's machine.",
+    tags: ["Rust", "Tauri", "React", "TypeScript", "Tokio", "Local-first"],
+    href: null,
+    linkLabel: null,
+    access: "Private · Personal production",
+    featured: false,
+    images: [],
+    views: [
+      {
+        kind: "diagram",
+        diagram: "discipline-execution-loop",
+        label: "Daily execution loop",
+        caption:
+          "Tasks move from a focused input into a time block, through execution and a five-second completion state, then into global and per-block progress.",
+      },
+      {
+        kind: "diagram",
+        diagram: "discipline-reset-engine",
+        label: "Automatic reset engine",
+        caption:
+          "Rust compares local day and ISO-week markers at startup, during every task command, and every 30 seconds—resetting daily and weekly completion independently.",
+      },
+      {
+        kind: "diagram",
+        diagram: "discipline-local-persistence",
+        label: "Atomic local persistence",
+        caption:
+          "React calls typed Tauri commands; Rust validates and updates the local task model, writes a temporary JSON file, and atomically replaces the active store.",
+      },
+    ],
+  },
+  {
+    slug: "hyperliquid-whale-tracker",
+    title: "Hyperliquid Whale Tracker",
+    category: "Real-time market intelligence",
+    description:
+      "A long-running Rust monitor that turns live Hyperliquid trade flow into size-qualified wallet intelligence, enriches it with actual positions, and emits ranked periodic reports.",
+    tags: ["Rust", "Tokio", "WebSockets", "Hyperliquid", "Reqwest", "Concurrency"],
+    href: null,
+    linkLabel: null,
+    access: "Private · Research tooling",
+    featured: false,
+    images: [],
+    views: [
+      {
+        kind: "diagram",
+        diagram: "whale-live-ingestion",
+        label: "Live trade ingestion",
+        caption:
+          "A reconnecting WebSocket worker subscribes to one symbol, maps every trade to buyer and seller wallets, and accumulates directional flow in shared concurrent state.",
+      },
+      {
+        kind: "diagram",
+        diagram: "whale-enrichment-report",
+        label: "Qualification and enrichment",
+        caption:
+          "The reporter snapshots wallet activity, filters by a configurable size threshold, ranks the largest flows, then resolves each wallet's actual position through Hyperliquid's information API.",
+      },
+      {
+        kind: "diagram",
+        diagram: "whale-runtime-resilience",
+        label: "Long-running runtime",
+        caption:
+          "Heartbeat, two-second reconnects, configurable report cadence, shared shutdown state, and joined Tokio tasks keep the monitor explicit and operationally predictable.",
+      },
+    ],
+  },
+  {
+    slug: "solana-grind",
+    title: "Solana Grind",
+    category: "Wallet utility",
+    description:
+      "A compact Rust CLI for generating vanity Solana keypairs, reading existing keypair files, converting local key material into hex and Base58, and checking the public address balance through Solana JSON-RPC.",
+    tags: ["Rust", "Solana CLI", "JSON-RPC", "Base58", "CLI", "Keypair tooling"],
+    href: null,
+    linkLabel: null,
+    access: "Local utility · Security-sensitive",
+    featured: false,
+    images: [],
+    views: [
+      {
+        kind: "diagram",
+        diagram: "solana-utility-flow",
+        label: "Vanity keypair workflow",
+        caption:
+          "A short prefix invokes solana-keygen grind while a full address selects an existing local keypair. Both paths validate the 64-byte file, produce local encodings, and use only the public address for the mainnet balance request.",
+      },
+    ],
   },
   {
     slug: "telegram-intelligence",

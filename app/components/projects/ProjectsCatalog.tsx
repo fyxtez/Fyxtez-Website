@@ -2,8 +2,18 @@
 
 import Image from "next/image";
 import { useState } from "react";
-import { projects, type Project } from "../../data/projects";
+import { getProjectViews, projects, type Project } from "../../data/projects";
 import ProjectGallery from "./ProjectGallery";
+
+function getCaseStudyLabel(project: Project) {
+  const views = getProjectViews(project);
+  const hasImages = views.some((view) => view.kind === "image");
+  const hasDiagrams = views.some((view) => view.kind === "diagram");
+
+  if (hasImages && hasDiagrams) return "Gallery + architecture";
+  if (hasDiagrams) return "View architecture";
+  return "View gallery";
+}
 
 export default function ProjectsCatalog() {
   const [galleryProject, setGalleryProject] = useState<Project | null>(null);
@@ -83,7 +93,10 @@ export default function ProjectsCatalog() {
 
         <div className="projects-list reveal">
           {archiveProjects.map((project, index) => (
-            <article className="project-row" key={project.slug}>
+            <article
+              className={`project-row ${getProjectViews(project).length ? "project-row--case-study" : ""}`}
+              key={project.slug}
+            >
               <span className="project-number">
                 {String(index + featuredProjects.length + 1).padStart(2, "0")}
               </span>
@@ -99,7 +112,19 @@ export default function ProjectsCatalog() {
                   ))}
                 </ul>
               </div>
-              <span className="private-label">{project.access}</span>
+              {getProjectViews(project).length ? (
+                <button
+                  className="project-case-link"
+                  type="button"
+                  onClick={() => setGalleryProject(project)}
+                  aria-label={`Open ${project.title} case study`}
+                >
+                  <span>{getCaseStudyLabel(project)}</span>
+                  <i aria-hidden="true">↗</i>
+                </button>
+              ) : (
+                <span className="private-label">{project.access}</span>
+              )}
             </article>
           ))}
         </div>
