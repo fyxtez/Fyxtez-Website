@@ -119,7 +119,7 @@ export const projects: Project[] = [
     description:
       "A local-first Linux desktop assistant for Binance, combining AI orchestration with a Rust boundary that keeps exchange access and credentials on the user's machine.",
     tags: ["Rust", "Tauri", "React", "AI agents", "OpenClaw"],
-    href: "https://aegis.fyxtez.com",
+    href: "https://aegis.fyxtez.com/",
     linkLabel: "Visit Aegis",
     access: "Public beta · Open source",
     featured: true,

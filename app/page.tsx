@@ -41,7 +41,7 @@ export default function Home() {
       <div className="background-grid" aria-hidden="true" />
       <SiteHeader />
 
-      <main>
+      <main id="main-content">
         <Hero />
 
         <section className="section section--expertise" id="capabilities">
@@ -119,7 +119,7 @@ export default function Home() {
               className="contact-method"
               href="https://t.me/fyxtez"
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
             >
               <span className="contact-method-icon contact-method-icon--telegram" aria-hidden="true">
                 <svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor">

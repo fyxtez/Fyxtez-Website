@@ -20,13 +20,13 @@ export default function Hero() {
         </p>
         <div className="hero-actions">
           <Link className="button button--accent" href="/projects">
-            Explore projects <span aria-hidden="true">→</span>
+            Explore all projects <span aria-hidden="true">→</span>
           </Link>
           <a
             className="button"
             href="https://github.com/fyxtez"
             target="_blank"
-            rel="noreferrer"
+            rel="noopener noreferrer"
           >
             GitHub <span aria-hidden="true">↗</span>
           </a>

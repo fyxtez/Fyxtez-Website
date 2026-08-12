@@ -1,9 +1,6 @@
-"use client";
-
 import Image from "next/image";
-import { useState } from "react";
+import Link from "next/link";
 import { getProjectViews, projects, type Project } from "../../data/projects";
-import ProjectGallery from "./ProjectGallery";
 
 function getCaseStudyLabel(project: Project) {
   const views = getProjectViews(project);
@@ -16,7 +13,6 @@ function getCaseStudyLabel(project: Project) {
 }
 
 export default function ProjectsCatalog() {
-  const [galleryProject, setGalleryProject] = useState<Project | null>(null);
   const featuredProjects = projects.filter((project) => project.featured);
   const archiveProjects = projects.filter((project) => !project.featured);
 
@@ -34,10 +30,9 @@ export default function ProjectsCatalog() {
               className={`featured-project-card featured-project-card--${project.slug}`}
               key={project.slug}
             >
-              <button
+              <Link
                 className="featured-project-visual"
-                type="button"
-                onClick={() => setGalleryProject(project)}
+                href={`/projects/${project.slug}`}
                 aria-label={`Open ${project.title} gallery`}
               >
                 <Image
@@ -50,7 +45,7 @@ export default function ProjectsCatalog() {
                   <span>View gallery</span>
                   <small>{String(project.images.length).padStart(2, "0")} views</small>
                 </span>
-              </button>
+              </Link>
 
               <div className="featured-project-copy">
                 <div className="featured-project-meta">
@@ -66,15 +61,14 @@ export default function ProjectsCatalog() {
                 </ul>
                 <span className="featured-project-access">{project.access}</span>
                 <div className="featured-project-actions">
-                  <button
+                  <Link
                     className="text-link text-link--button"
-                    type="button"
-                    onClick={() => setGalleryProject(project)}
+                    href={`/projects/${project.slug}`}
                   >
                     View gallery <span aria-hidden="true">→</span>
-                  </button>
+                  </Link>
                   {project.href && (
-                    <a className="text-link text-link--muted" href={project.href} target="_blank" rel="noreferrer">
+                    <a className="text-link text-link--muted" href={project.href} target="_blank" rel="noopener noreferrer">
                       {project.linkLabel} <span aria-hidden="true">↗</span>
                     </a>
                   )}
@@ -113,15 +107,14 @@ export default function ProjectsCatalog() {
                 </ul>
               </div>
               {getProjectViews(project).length ? (
-                <button
+                <Link
                   className="project-case-link"
-                  type="button"
-                  onClick={() => setGalleryProject(project)}
+                  href={`/projects/${project.slug}`}
                   aria-label={`Open ${project.title} case study`}
                 >
                   <span>{getCaseStudyLabel(project)}</span>
                   <i aria-hidden="true">↗</i>
-                </button>
+                </Link>
               ) : (
                 <span className="private-label">{project.access}</span>
               )}
@@ -129,12 +122,6 @@ export default function ProjectsCatalog() {
           ))}
         </div>
       </section>
-
-      <ProjectGallery
-        key={galleryProject?.slug ?? "closed"}
-        project={galleryProject}
-        onClose={() => setGalleryProject(null)}
-      />
     </>
   );
 }

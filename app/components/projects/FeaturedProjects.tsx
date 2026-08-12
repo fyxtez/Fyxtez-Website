@@ -1,13 +1,8 @@
-"use client";
-
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
-import { projects, type Project } from "../../data/projects";
-import ProjectGallery from "./ProjectGallery";
+import { projects } from "../../data/projects";
 
 export default function FeaturedProjects() {
-  const [galleryProject, setGalleryProject] = useState<Project | null>(null);
   const featuredProjects = projects.filter((project) => project.featured);
 
   return (
@@ -30,10 +25,9 @@ export default function FeaturedProjects() {
             className={`featured-project-card featured-project-card--${project.slug}`}
             key={project.slug}
           >
-            <button
+            <Link
               className="featured-project-visual"
-              type="button"
-              onClick={() => setGalleryProject(project)}
+              href={`/projects/${project.slug}`}
               aria-label={`Open ${project.title} gallery`}
             >
               <Image
@@ -46,7 +40,7 @@ export default function FeaturedProjects() {
                 <span>View gallery</span>
                 <small>{String(project.images.length).padStart(2, "0")} views</small>
               </span>
-            </button>
+            </Link>
 
             <div className="featured-project-copy">
               <div className="featured-project-meta">
@@ -62,15 +56,14 @@ export default function FeaturedProjects() {
               </ul>
               <span className="featured-project-access">{project.access}</span>
               <div className="featured-project-actions">
-                <button
+                <Link
                   className="text-link text-link--button"
-                  type="button"
-                  onClick={() => setGalleryProject(project)}
+                  href={`/projects/${project.slug}`}
                 >
                   View gallery <span aria-hidden="true">→</span>
-                </button>
+                </Link>
                 {project.href && (
-                  <a className="text-link text-link--muted" href={project.href} target="_blank" rel="noreferrer">
+                  <a className="text-link text-link--muted" href={project.href} target="_blank" rel="noopener noreferrer">
                     {project.linkLabel} <span aria-hidden="true">↗</span>
                   </a>
                 )}
@@ -82,15 +75,9 @@ export default function FeaturedProjects() {
 
       <div className="projects-footer-link">
         <Link className="text-link" href="/projects">
-          View project archive <span aria-hidden="true">→</span>
+          View all projects <span aria-hidden="true">→</span>
         </Link>
       </div>
-
-      <ProjectGallery
-        key={galleryProject?.slug ?? "closed"}
-        project={galleryProject}
-        onClose={() => setGalleryProject(null)}
-      />
     </section>
   );
 }

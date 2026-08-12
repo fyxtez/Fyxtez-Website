@@ -25,7 +25,7 @@ export default function SiteHeader({ current = "home" }: SiteHeaderProps) {
           className={current === "projects" ? "nav-active" : undefined}
           href="/projects"
         >
-          Projects
+          All Projects
         </Link>
         <Link href="/#capabilities">Capabilities</Link>
         <a
@@ -45,7 +45,7 @@ export default function SiteHeader({ current = "home" }: SiteHeaderProps) {
         </a>
       </nav>
 
-      <span className="nav-status">Available</span>
+      <span className="nav-status" aria-label="Available for work">Available</span>
     </header>
   );
 }

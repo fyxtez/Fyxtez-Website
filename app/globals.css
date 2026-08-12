@@ -1428,6 +1428,31 @@ body::after {
   color: #17120a;
 }
 
+.skip-link {
+  position: fixed;
+  z-index: 500;
+  top: 12px;
+  left: 12px;
+  padding: 12px 16px;
+  border: 1px solid var(--accent);
+  background: #0a0a0a;
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+  transform: translateY(calc(-100% - 20px));
+  transition: transform 160ms ease;
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+:where(a, button, [tabindex]):focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
 a {
   color: inherit;
 }
@@ -1478,6 +1503,8 @@ main,
 
 .brand {
   display: inline-flex;
+  min-width: 44px;
+  min-height: 44px;
   align-items: center;
   gap: 12px;
   text-decoration: none;
@@ -1517,6 +1544,9 @@ main,
 
 .site-nav a {
   position: relative;
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
   color: var(--muted);
   font-size: 14px;
   font-weight: 560;
@@ -2022,6 +2052,7 @@ main,
 
 .text-link {
   display: inline-flex;
+  min-height: 44px;
   align-items: center;
   gap: 12px;
   color: var(--text);
@@ -2250,6 +2281,9 @@ main,
 }
 
 .footer-links a {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
   color: #c5c5bf;
   font-size: 15px;
   font-weight: 550;
@@ -2350,6 +2384,7 @@ main,
   letter-spacing: 0.075em;
   line-height: 1.35;
   text-align: right;
+  text-decoration: none;
   text-transform: uppercase;
   cursor: pointer;
 }
@@ -2366,7 +2401,8 @@ main,
   border-color: var(--accent);
   background: rgba(245, 166, 35, 0.07);
   color: var(--text);
-  outline: none;
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
 }
 
 .project-case-link:hover i,
@@ -2443,6 +2479,7 @@ main,
   background-size: 42px 42px;
   color: inherit;
   cursor: pointer;
+  text-decoration: none;
 }
 
 .featured-project-visual::after {
@@ -2593,6 +2630,33 @@ main,
   background: rgba(0, 0, 0, 0.82);
   place-items: center;
   backdrop-filter: blur(12px);
+}
+
+.gallery-loading-backdrop {
+  position: fixed;
+  z-index: 200;
+  inset: 0;
+  display: grid;
+  background: rgba(0, 0, 0, 0.88);
+  color: var(--accent);
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  place-items: center;
+  text-transform: uppercase;
+  backdrop-filter: blur(12px);
+}
+
+.diagram-loading-state {
+  display: grid;
+  width: 100%;
+  min-height: 100%;
+  color: var(--accent);
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  place-items: center;
+  text-transform: uppercase;
 }
 
 .project-gallery {
@@ -2969,6 +3033,11 @@ main,
 }
 
 .gallery-close {
+  display: inline-flex;
+  min-width: 72px;
+  min-height: 44px;
+  align-items: center;
+  justify-content: flex-end;
   align-self: flex-end;
   padding: 8px 0;
   border: 0;
@@ -3087,22 +3156,49 @@ main,
 
 .gallery-progress {
   display: flex;
+  min-height: 44px;
+  align-items: center;
   gap: 5px;
-  margin-top: 12px;
+  margin: 1px 0 -10px;
 }
 
 .gallery-progress button {
+  position: relative;
   width: 100%;
-  height: 2px;
+  height: 44px;
   padding: 0;
   border: 0;
-  background: var(--line-strong);
+  background: transparent;
   cursor: pointer;
+}
+
+.gallery-progress button::after {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  left: 0;
+  height: 2px;
+  background: var(--line-strong);
+  content: "";
+  transform: translateY(-50%);
   transition: background 180ms ease;
 }
 
-.gallery-progress button.is-active {
+.gallery-progress button.is-active::after {
   background: var(--accent);
+}
+
+.project-route-summary .tag-list {
+  margin: 30px 0 18px;
+  padding: 0;
+}
+
+.project-route-summary .button {
+  margin-top: 28px;
+}
+
+#contact {
+  scroll-margin-top: 104px;
 }
 
 .gallery-current-view {

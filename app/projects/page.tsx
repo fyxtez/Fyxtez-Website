@@ -5,9 +5,18 @@ import SiteHeader from "../components/siteHeader/SiteHeader";
 import { projects } from "../data/projects";
 
 export const metadata: Metadata = {
-  title: "Projects",
+  title: "All Projects",
   description:
-    "Selected Rust, trading infrastructure, automation, and product engineering projects by Fyxtez.",
+    "Explore Rust, real-time systems, automation, data, trading infrastructure, and product engineering projects by Fyxtez.",
+  alternates: { canonical: "/projects" },
+  openGraph: {
+    title: "All Projects — Fyxtez",
+    description:
+      "Rust, real-time systems, automation, data, and end-to-end product engineering case studies.",
+    url: "/projects",
+    siteName: "Fyxtez",
+    type: "website",
+  },
 };
 
 export default function ProjectsPage() {
@@ -16,10 +25,10 @@ export default function ProjectsPage() {
       <div className="background-grid" aria-hidden="true" />
       <SiteHeader current="projects" />
 
-      <main className="projects-main">
+      <main id="main-content" className="projects-main">
         <section className="projects-hero reveal">
           <div>
-            <p className="eyebrow">Project archive</p>
+            <p className="eyebrow">All Projects</p>
             <h1>
               Systems built to <span>do the work.</span>
             </h1>

@@ -1,14 +1,50 @@
+"use client";
+
+import dynamic from "next/dynamic";
 import type { ProjectDiagramId } from "../../data/projects";
-import DisciplineDiagram from "./DisciplineDiagram";
-import MacroImpactDiagram from "./MacroImpactDiagram";
-import MordexelDiagram from "./MordexelDiagram";
-import SolanaToolsDiagram from "./SolanaToolsDiagram";
-import StrategyDashboardDiagram from "./StrategyDashboardDiagram";
-import TelegramIntelligenceDiagram from "./TelegramIntelligenceDiagram";
-import TelegramNotifyDiagram from "./TelegramNotifyDiagram";
-import WhaleTrackerDiagram from "./WhaleTrackerDiagram";
-import YouTubeWatcherDiagram from "./YouTubeWatcherDiagram";
-import VoitodoDiagram from "./VoitodoDiagram";
+
+function DiagramLoadingState() {
+  return (
+    <div className="diagram-loading-state" role="status" aria-live="polite">
+      Loading architecture view…
+    </div>
+  );
+}
+
+const DisciplineDiagram = dynamic(() => import("./DisciplineDiagram"), {
+  loading: DiagramLoadingState,
+});
+const MacroImpactDiagram = dynamic(() => import("./MacroImpactDiagram"), {
+  loading: DiagramLoadingState,
+});
+const MordexelDiagram = dynamic(() => import("./MordexelDiagram"), {
+  loading: DiagramLoadingState,
+});
+const SolanaToolsDiagram = dynamic(() => import("./SolanaToolsDiagram"), {
+  loading: DiagramLoadingState,
+});
+const StrategyDashboardDiagram = dynamic(
+  () => import("./StrategyDashboardDiagram"),
+  { loading: DiagramLoadingState },
+);
+const TelegramIntelligenceDiagram = dynamic(
+  () => import("./TelegramIntelligenceDiagram"),
+  { loading: DiagramLoadingState },
+);
+const TelegramNotifyDiagram = dynamic(
+  () => import("./TelegramNotifyDiagram"),
+  { loading: DiagramLoadingState },
+);
+const WhaleTrackerDiagram = dynamic(() => import("./WhaleTrackerDiagram"), {
+  loading: DiagramLoadingState,
+});
+const YouTubeWatcherDiagram = dynamic(
+  () => import("./YouTubeWatcherDiagram"),
+  { loading: DiagramLoadingState },
+);
+const VoitodoDiagram = dynamic(() => import("./VoitodoDiagram"), {
+  loading: DiagramLoadingState,
+});
 
 type ProjectDiagramProps = {
   diagram: ProjectDiagramId;

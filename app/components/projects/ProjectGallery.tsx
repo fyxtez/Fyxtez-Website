@@ -26,6 +26,7 @@ export default function ProjectGallery({ project, onClose }: ProjectGalleryProps
   const [zoomScale, setZoomScale] = useState(1);
   const [detailPan, setDetailPan] = useState({ x: 0, y: 0 });
   const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const dialogRef = useRef<HTMLElement>(null);
   const galleryStageRef = useRef<HTMLDivElement>(null);
   const pointerStartRef = useRef<GalleryPointerStart | null>(null);
   const views = useMemo(() => (project ? getProjectViews(project) : []), [project]);
@@ -65,10 +66,48 @@ export default function ProjectGallery({ project, onClose }: ProjectGalleryProps
 
     const previousOverflow = document.body.style.overflow;
     const previouslyFocused = document.activeElement as HTMLElement | null;
+    const dialog = dialogRef.current;
+    const modalRoot = dialog?.closest(".gallery-backdrop");
+    const inertElements = Array.from(document.body.children).filter(
+      (element): element is HTMLElement =>
+        element instanceof HTMLElement && element !== modalRoot,
+    );
+    const inertState = inertElements.map((element) => ({
+      element,
+      wasInert: element.inert,
+    }));
+
     document.body.style.overflow = "hidden";
+    inertElements.forEach((element) => {
+      element.inert = true;
+    });
     closeButtonRef.current?.focus();
 
     const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Tab" && dialog) {
+        const focusableElements = Array.from(
+          dialog.querySelectorAll<HTMLElement>(
+            'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])',
+          ),
+        ).filter((element) => !element.hidden && element.getClientRects().length > 0);
+
+        if (focusableElements.length === 0) {
+          event.preventDefault();
+          return;
+        }
+
+        const first = focusableElements[0];
+        const last = focusableElements[focusableElements.length - 1];
+
+        if (event.shiftKey && document.activeElement === first) {
+          event.preventDefault();
+          last.focus();
+        } else if (!event.shiftKey && document.activeElement === last) {
+          event.preventDefault();
+          first.focus();
+        }
+      }
+
       if (event.key === "Escape") closeGallery();
       if (event.key === "ArrowDown" || event.key === "ArrowRight") {
         event.preventDefault();
@@ -84,6 +123,9 @@ export default function ProjectGallery({ project, onClose }: ProjectGalleryProps
 
     return () => {
       document.body.style.overflow = previousOverflow;
+      inertState.forEach(({ element, wasInert }) => {
+        element.inert = wasInert;
+      });
       window.removeEventListener("keydown", handleKeyDown);
       previouslyFocused?.focus();
     };
@@ -120,10 +162,12 @@ export default function ProjectGallery({ project, onClose }: ProjectGalleryProps
       }}
     >
       <section
+        ref={dialogRef}
         className="project-gallery"
         role="dialog"
         aria-modal="true"
         aria-labelledby="gallery-project-title"
+        aria-describedby="gallery-project-description"
       >
         <div
           className={`gallery-visual ${hasDiagrams ? "gallery-visual--diagram" : ""} ${isDragging ? "is-dragging" : ""} ${
@@ -367,7 +411,7 @@ export default function ProjectGallery({ project, onClose }: ProjectGalleryProps
             <p>{project.category}</p>
             <h2 id="gallery-project-title">{project.title}</h2>
             <span>{project.access}</span>
-            <p>{project.description}</p>
+            <p id="gallery-project-description">{project.description}</p>
             <ul className="gallery-project-tags" aria-label="Project technologies">
               {project.tags.map((tag) => (
                 <li key={tag}>{tag}</li>
@@ -419,7 +463,7 @@ export default function ProjectGallery({ project, onClose }: ProjectGalleryProps
               className="gallery-project-link"
               href={project.href}
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
             >
               {project.linkLabel} <span aria-hidden="true">↗</span>
             </a>
