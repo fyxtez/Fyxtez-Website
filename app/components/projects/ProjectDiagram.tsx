@@ -1,5 +1,6 @@
 import type { ProjectDiagramId } from "../../data/projects";
 import DisciplineDiagram from "./DisciplineDiagram";
+import MacroImpactDiagram from "./MacroImpactDiagram";
 import MordexelDiagram from "./MordexelDiagram";
 import SolanaToolsDiagram from "./SolanaToolsDiagram";
 import StrategyDashboardDiagram from "./StrategyDashboardDiagram";
@@ -248,6 +249,9 @@ function LocalFirst() {
 }
 
 export default function ProjectDiagram({ diagram }: ProjectDiagramProps) {
+  if (diagram === "btc-news-impact-architecture") {
+    return <MacroImpactDiagram />;
+  }
   if (diagram.startsWith("voitodo-")) {
     return <VoitodoDiagram diagram={diagram} />;
   }

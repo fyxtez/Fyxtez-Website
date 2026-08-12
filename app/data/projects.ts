@@ -25,6 +25,7 @@ export type ProjectDiagramId =
   | "voitodo-voice-command"
   | "voitodo-daily-lifecycle"
   | "strategy-research-architecture"
+  | "btc-news-impact-architecture"
   | "whale-live-ingestion"
   | "whale-enrichment-report"
   | "whale-runtime-resilience";
@@ -293,6 +294,43 @@ export const projects: Project[] = [
         label: "Research system architecture",
         caption:
           "Telegram message history is normalized into ordered trade events, correlated into typed TradeRecords, exposed through a focused Axum boundary, and carried into Next.js research views without losing the underlying trade lifecycle.",
+      },
+    ],
+  },
+  {
+    slug: "btc-news-impact",
+    title: "BTC News Impact",
+    category: "Macro reaction research",
+    description:
+      "A Rust research pipeline that extracts macro releases from Telegram history, aligns every event with real BTC/USDT trades, classifies reaction quality, and renders filterable multi-horizon evidence.",
+    tags: ["Rust", "Tokio", "Reqwest", "Binance aggTrades", "Telegram data", "Event research", "Static dashboard"],
+    href: null,
+    linkLabel: null,
+    access: "Private dataset · Research tooling",
+    featured: false,
+    images: [
+      {
+        src: "/projects/btc-news-impact/01-reaction-log.png",
+        alt: "BTC News Impact macro reaction log with event counts, research filters, and multi-horizon BTC moves",
+        label: "Macro reaction log",
+        caption:
+          "The research workspace brings event categories, full-text search, reaction quality, sorting, and the selected BTC timeframe into one inspectable feed.",
+      },
+      {
+        src: "/projects/btc-news-impact/02-event-analysis.png",
+        alt: "BTC News Impact event cards comparing BTC reactions at 20 seconds, 1 minute, 5 minutes, 1 hour, and 12 hours",
+        label: "Event-level evidence",
+        caption:
+          "Every macro message remains attached to its source context, importance and noise assessment, plus the signed BTC move across five reaction windows.",
+      },
+    ],
+    views: [
+      {
+        kind: "diagram",
+        diagram: "btc-news-impact-architecture",
+        label: "Event-to-reaction architecture",
+        caption:
+          "Telegram history is normalized and matched into macro candidates, deterministically classified, aligned with the first Binance aggregated trade at each target timestamp, cached incrementally, and emitted as a filterable research artifact.",
       },
     ],
   },
