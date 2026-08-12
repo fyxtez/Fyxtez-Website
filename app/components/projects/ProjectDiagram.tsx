@@ -7,6 +7,7 @@ import TelegramIntelligenceDiagram from "./TelegramIntelligenceDiagram";
 import TelegramNotifyDiagram from "./TelegramNotifyDiagram";
 import WhaleTrackerDiagram from "./WhaleTrackerDiagram";
 import YouTubeWatcherDiagram from "./YouTubeWatcherDiagram";
+import VoitodoDiagram from "./VoitodoDiagram";
 
 type ProjectDiagramProps = {
   diagram: ProjectDiagramId;
@@ -247,6 +248,9 @@ function LocalFirst() {
 }
 
 export default function ProjectDiagram({ diagram }: ProjectDiagramProps) {
+  if (diagram.startsWith("voitodo-")) {
+    return <VoitodoDiagram diagram={diagram} />;
+  }
   if (diagram === "youtube-release-watcher") {
     return <YouTubeWatcherDiagram />;
   }

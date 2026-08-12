@@ -36,6 +36,10 @@ export default function ProjectGallery({ project, onClose }: ProjectGalleryProps
     setIsDragging(false);
     setZoomScale(1);
     setDetailPan({ x: 0, y: 0 });
+    if (galleryStageRef.current) {
+      galleryStageRef.current.scrollTop = 0;
+      galleryStageRef.current.scrollLeft = 0;
+    }
   }, []);
 
   const closeGallery = useCallback(() => {
@@ -440,7 +444,7 @@ export default function ProjectGallery({ project, onClose }: ProjectGalleryProps
 
           <p className="gallery-hint">
             {hasDiagrams
-              ? "Drag to change architecture view · Swipe on mobile"
+              ? "Scroll to explore · Drag to change architecture view · Swipe on mobile"
               : isDetailMode
               ? `Mouse wheel zoom · ${Math.round(zoomScale * 100)}% · Drag image to inspect`
               : "Mouse wheel zoom · Drag to change screenshot · Swipe or zoom on mobile"}

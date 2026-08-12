@@ -22,6 +22,8 @@ export type ProjectDiagramId =
   | "telegram-automation-workers"
   | "telegram-notify-flow"
   | "youtube-release-watcher"
+  | "voitodo-voice-command"
+  | "voitodo-daily-lifecycle"
   | "strategy-research-architecture"
   | "whale-live-ingestion"
   | "whale-enrichment-report"
@@ -512,29 +514,32 @@ export const projects: Project[] = [
     ],
   },
   {
-    slug: "voice-trade-terminal",
-    title: "Voice Trade Terminal",
-    category: "Experimental interface",
+    slug: "voitodo",
+    title: "Voitodo",
+    category: "Voice-first Android utility",
     description:
-      "A local, low-friction voice interface that turns short spoken commands into structured trading actions with explicit confirmation boundaries.",
-    tags: ["Rust", "Whisper", "Audio", "Trading"],
+      "A local-first Android task app where native speech recognition feeds a Rust command parser, mutates a persistent daily routine, and returns live updates to a swipe-driven React interface.",
+    tags: ["Rust", "Tauri 2", "React", "Android", "JNI", "SpeechRecognizer", "Local-first", "JSON"],
     href: null,
     linkLabel: null,
-    access: "Private",
+    access: "Private · Android application",
     featured: false,
     images: [],
-  },
-  {
-    slug: "news-latency-lab",
-    title: "News Latency Lab",
-    category: "Market research",
-    description:
-      "A research environment for measuring how quickly macro and crypto news propagates into market prices across second-level event windows.",
-    tags: ["Rust", "Data pipelines", "Backtesting", "Binance"],
-    href: null,
-    linkLabel: null,
-    access: "Private",
-    featured: false,
-    images: [],
+    views: [
+      {
+        kind: "diagram",
+        diagram: "voitodo-voice-command",
+        label: "Native voice command path",
+        caption:
+          "A tap crosses the Tauri boundary into Android's native SpeechRecognizer. Kotlin returns the transcript through JNI, Rust normalizes and parses it into a bounded add, complete, or remove command, persists the mutation, and emits typed events back to React.",
+      },
+      {
+        kind: "diagram",
+        diagram: "voitodo-daily-lifecycle",
+        label: "Local daily task lifecycle",
+        caption:
+          "The app keeps a reusable routine list, today's active tasks, and the last reset date in one local JSON store. Startup and a 30-second date check restore the routine on a new local day, while swipe completion removes only the active instance.",
+      },
+    ],
   },
 ];
