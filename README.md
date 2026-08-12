@@ -4,7 +4,7 @@ Personal portfolio built with Next.js, React, TypeScript, and Tailwind CSS.
 
 ## Included
 
-- Static Home and All Projects pages
+- Static Home, About, and All Projects pages
 - Shareable project case-study routes at `/projects/[slug]`
 - Generated Open Graph image, sitemap, robots rules, canonical metadata, and JSON-LD
 - Keyboard-accessible project gallery with focus containment

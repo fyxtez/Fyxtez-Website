@@ -4,7 +4,7 @@ import Link from "next/link";
 import LogoMark from "../logo/LogoMark";
 
 type SiteHeaderProps = {
-  current?: "home" | "projects";
+  current?: "home" | "about" | "projects";
 };
 
 export default function SiteHeader({ current = "home" }: SiteHeaderProps) {
@@ -18,17 +18,27 @@ export default function SiteHeader({ current = "home" }: SiteHeaderProps) {
       </Link>
 
       <nav className="site-nav" aria-label="Primary navigation">
-        <Link className={current === "home" ? "nav-active" : undefined} href="/">
+        <Link
+          className={`nav-home ${current === "home" ? "nav-active" : ""}`}
+          href="/"
+        >
           Home
         </Link>
         <Link
-          className={current === "projects" ? "nav-active" : undefined}
+          className={`nav-about ${current === "about" ? "nav-active" : ""}`}
+          href="/about"
+        >
+          About
+        </Link>
+        <Link
+          className={`nav-projects ${current === "projects" ? "nav-active" : ""}`}
           href="/projects"
         >
           All Projects
         </Link>
-        <Link href="/#capabilities">Capabilities</Link>
+        <Link className="nav-capabilities" href="/#capabilities">Capabilities</Link>
         <a
+          className="nav-contact"
           href={contactHref}
           onClick={(event) => {
             if (current !== "home") return;
