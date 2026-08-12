@@ -3,7 +3,10 @@ import DisciplineDiagram from "./DisciplineDiagram";
 import MordexelDiagram from "./MordexelDiagram";
 import SolanaToolsDiagram from "./SolanaToolsDiagram";
 import StrategyDashboardDiagram from "./StrategyDashboardDiagram";
+import TelegramIntelligenceDiagram from "./TelegramIntelligenceDiagram";
+import TelegramNotifyDiagram from "./TelegramNotifyDiagram";
 import WhaleTrackerDiagram from "./WhaleTrackerDiagram";
+import YouTubeWatcherDiagram from "./YouTubeWatcherDiagram";
 
 type ProjectDiagramProps = {
   diagram: ProjectDiagramId;
@@ -244,6 +247,15 @@ function LocalFirst() {
 }
 
 export default function ProjectDiagram({ diagram }: ProjectDiagramProps) {
+  if (diagram === "youtube-release-watcher") {
+    return <YouTubeWatcherDiagram />;
+  }
+  if (diagram.startsWith("telegram-") && diagram !== "telegram-notify-flow") {
+    return <TelegramIntelligenceDiagram diagram={diagram} />;
+  }
+  if (diagram === "telegram-notify-flow") {
+    return <TelegramNotifyDiagram />;
+  }
   if (diagram === "solana-utility-flow") {
     return <SolanaToolsDiagram />;
   }

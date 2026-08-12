@@ -16,6 +16,12 @@ export type ProjectDiagramId =
   | "mordexel-sizing-engine"
   | "mordexel-order-lifecycle"
   | "solana-utility-flow"
+  | "telegram-fleet-topology"
+  | "telegram-signal-pipeline"
+  | "telegram-control-plane"
+  | "telegram-automation-workers"
+  | "telegram-notify-flow"
+  | "youtube-release-watcher"
   | "strategy-research-architecture"
   | "whale-live-ingestion"
   | "whale-enrichment-report"
@@ -419,17 +425,91 @@ export const projects: Project[] = [
     ],
   },
   {
-    slug: "telegram-intelligence",
-    title: "Telegram Intelligence",
-    category: "Information automation",
+    slug: "telegram-notify",
+    title: "telegram-notify",
+    category: "Open-source Rust crate",
     description:
-      "A collection of high-speed Telegram ingestion and automation systems for message routing, signal capture, extraction, and event-driven actions.",
-    tags: ["Rust", "MTProto", "Axum", "Automation"],
-    href: null,
-    linkLabel: null,
-    access: "Private",
+      "A tiny async Rust crate that turns one send(msg).await call into a validated Telegram notification for a configured chat, with explicit errors returned to the caller.",
+    tags: ["Rust", "Tokio", "Teloxide", "Telegram Bot API", "Async", "crates.io"],
+    href: "https://crates.io/crates/telegram-notify",
+    linkLabel: "View on crates.io",
+    access: "Public · MIT · crates.io",
     featured: false,
     images: [],
+    views: [
+      {
+        kind: "diagram",
+        diagram: "telegram-notify-flow",
+        label: "One-call notification flow",
+        caption:
+          "The public send API trims and validates the message, resolves environment configuration, reuses a OnceLock-backed Teloxide client, sends plain text to one Telegram chat, and returns every failure as a typed NotifyError.",
+      },
+    ],
+  },
+  {
+    slug: "telegram-intelligence",
+    title: "Telegram Intelligence",
+    category: "Distributed messaging automation",
+    description:
+      "A fleet of independently deployable Rust services that turns Telegram activity into validated market events, automated account actions, execution requests, and bounded maintenance work.",
+    tags: ["Rust", "Tokio", "MTProto", "Axum", "SQLite", "React", "Event-driven", "Background workers"],
+    href: null,
+    linkLabel: null,
+    access: "Private · Multi-process automation",
+    featured: false,
+    images: [],
+    views: [
+      {
+        kind: "diagram",
+        diagram: "telegram-fleet-topology",
+        label: "Distributed worker fleet",
+        caption:
+          "Telegram MTProto is the shared upstream event fabric, while three separately runnable Rust workloads keep their own session, state, lifecycle, and failure boundary: the intelligence service, the account automation daemon, and a bounded maintenance job.",
+      },
+      {
+        kind: "diagram",
+        diagram: "telegram-signal-pipeline",
+        label: "Signal-to-action pipeline",
+        caption:
+          "The Sniper hot path checks the in-memory channel policy before parsing, validates Solana-shaped candidates by decoding them to 32 bytes, submits configured execution requests, records detections, and reports outcomes through the public telegram-notify crate.",
+      },
+      {
+        kind: "diagram",
+        diagram: "telegram-control-plane",
+        label: "Control plane and state",
+        caption:
+          "A local React dashboard changes channel activation, night coverage, and per-channel execution parameters through Axum. SQLite remains the source of truth while an RwLock-backed map keeps the message hot path free from database reads.",
+      },
+      {
+        kind: "diagram",
+        diagram: "telegram-automation-workers",
+        label: "Automation and maintenance",
+        caption:
+          "The account daemon fans Telegram updates into delayed reactions and auto-read actions while a clock-driven task applies night notification policy. A separate one-shot sweeper handles bulk read-state cleanup with concurrency capped at ten requests.",
+      },
+    ],
+  },
+  {
+    slug: "youtube-release-watcher",
+    title: "YouTube Release Watcher",
+    category: "Content monitoring worker",
+    description:
+      "A stateful Rust worker that monitors selected YouTube Atom feeds, identifies unseen long-form uploads, suppresses Shorts and stale-feed notification bursts, and delivers low-latency ntfy alerts.",
+    tags: ["Rust", "reqwest", "quick-xml", "RSS / Atom", "ntfy", "Polling", "Local state"],
+    href: null,
+    linkLabel: null,
+    access: "Private · Long-running worker",
+    featured: false,
+    images: [],
+    views: [
+      {
+        kind: "diagram",
+        diagram: "youtube-release-watcher",
+        label: "Polling and recovery loop",
+        caption:
+          "Every channel keeps an independent last-seen cursor. The worker polls YouTube's Atom feed, parses entries newest-first, resynchronizes quietly when a stale cursor falls outside the feed window, filters Shorts through redirect resolution, delivers new long-form uploads through ntfy, and persists the newest ID.",
+      },
+    ],
   },
   {
     slug: "voice-trade-terminal",
