@@ -1,9 +1,13 @@
 import { ImageResponse } from "next/og";
 
-export const alt =
-  "Fyxtez — Rust engineer building real-time systems and software products";
-export const size = { width: 1200, height: 630 };
+export const alt = "FYXTEZ — Systems and automation";
+export const size = {
+  width: 1200,
+  height: 630,
+};
 export const contentType = "image/png";
+
+const gold = "#f5a623";
 
 export default function OpenGraphImage() {
   return new ImageResponse(
@@ -12,76 +16,149 @@ export default function OpenGraphImage() {
         width: "100%",
         height: "100%",
         display: "flex",
-        position: "relative",
-        flexDirection: "column",
-        justifyContent: "space-between",
-        padding: "64px 72px",
-        overflow: "hidden",
-        background: "#090909",
-        color: "#f3f3f1",
+        alignItems: "center",
+        background: "#f4f1ea",
+        color: "#111111",
         fontFamily: "Arial, Helvetica, sans-serif",
+        padding: "72px",
       }}
     >
+      {/* Leva grafika */}
       <div
         style={{
-          position: "absolute",
-          inset: 0,
+          width: "38%",
+          height: "100%",
           display: "flex",
-          opacity: 0.14,
-          backgroundImage:
-            "linear-gradient(rgba(255,255,255,.18) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.18) 1px, transparent 1px)",
-          backgroundSize: "56px 56px",
+          alignItems: "center",
+          justifyContent: "center",
+          position: "relative",
         }}
-      />
-      <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
+      >
         <div
           style={{
-            width: 58,
-            height: 58,
+            width: 260,
+            height: 260,
             display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            background: "#f5a623",
-            color: "#111",
-            fontSize: 34,
-            fontWeight: 800,
-            fontStyle: "italic",
+            position: "relative",
           }}
         >
-          F
+          <div
+            style={{
+              position: "absolute",
+              top: 20,
+              left: 20,
+              width: 90,
+              height: 90,
+              border: `5px solid ${gold}`,
+              borderRadius: 18,
+              display: "flex",
+            }}
+          />
+
+          <div
+            style={{
+              position: "absolute",
+              top: 110,
+              left: 135,
+              width: 105,
+              height: 105,
+              border: `5px solid ${gold}`,
+              borderRadius: 18,
+              display: "flex",
+            }}
+          />
+
+          <div
+            style={{
+              position: "absolute",
+              top: 66,
+              left: 88,
+              width: 115,
+              height: 5,
+              background: gold,
+              display: "flex",
+            }}
+          />
+
+          <div
+            style={{
+              position: "absolute",
+              top: 62,
+              left: 140,
+              width: 14,
+              height: 14,
+              borderRadius: 999,
+              background: gold,
+              display: "flex",
+            }}
+          />
+
+          <div
+            style={{
+              position: "absolute",
+              top: 70,
+              left: 185,
+              width: 5,
+              height: 82,
+              background: gold,
+              display: "flex",
+            }}
+          />
         </div>
-        <div style={{ display: "flex", fontSize: 25, fontWeight: 700, letterSpacing: 4 }}>
+      </div>
+
+      {/* Desni sadržaj */}
+      <div
+        style={{
+          width: "62%",
+          height: "100%",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "flex-start",
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            fontSize: 30,
+            fontWeight: 800,
+            letterSpacing: 8,
+            color: gold,
+          }}
+        >
           FYXTEZ
         </div>
-      </div>
-      <div style={{ display: "flex", flexDirection: "column", maxWidth: 980 }}>
+
         <div
           style={{
             display: "flex",
-            color: "#f5a623",
-            fontSize: 18,
-            fontWeight: 700,
-            letterSpacing: 4,
-            textTransform: "uppercase",
+            flexDirection: "column",
+            marginTop: 34,
+            fontSize: 72,
+            lineHeight: 1.02,
+            fontWeight: 900,
+            letterSpacing: -2,
           }}
         >
-          Rust Engineer · Real-Time Systems · Product Engineering
+          <div style={{ display: "flex" }}>BUILDING SYSTEMS.</div>
+
+          <div style={{ display: "flex" }}>
+            SOLVING&nbsp;
+            <span style={{ color: gold }}>REAL PROBLEMS.</span>
+          </div>
         </div>
+
         <div
           style={{
             display: "flex",
-            marginTop: 25,
-            fontSize: 68,
-            fontWeight: 500,
-            lineHeight: 1.05,
-            letterSpacing: -3,
+            marginTop: 38,
+            fontSize: 24,
+            color: "#555555",
           }}
         >
-          Engineering systems that solve real problems.
+          Build · Automate · Integrate · Deliver
         </div>
-      </div>
-      <div style={{ display: "flex", color: "#a0a09a", fontSize: 20 }}>
-        Rust · React · Automation · Web · Desktop · Mobile
       </div>
     </div>,
     size,

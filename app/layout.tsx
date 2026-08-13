@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
 const siteDescription =
-  "Rust engineer building real-time systems, automation, exchange integrations, and practical software products across web, desktop, and mobile.";
+  "Real-time systems, automation and product engineering.";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://fyxtez.com"),
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
   ],
   alternates: { canonical: "/" },
   openGraph: {
-    title: "Fyxtez — Rust Engineer | Real-Time Systems & Product Engineering",
+    title: "FYXTEZ — Systems & Automation",
     description: siteDescription,
     url: "/",
     siteName: "Fyxtez",
@@ -45,7 +45,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Fyxtez — Rust Engineer | Real-Time Systems & Product Engineering",
+    title: "FYXTEZ — Systems & Automation",
     description: siteDescription,
     images: ["/opengraph-image"],
   },
