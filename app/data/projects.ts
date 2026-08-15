@@ -25,6 +25,7 @@ export type ProjectDiagramId =
   | "voitodo-voice-command"
   | "voitodo-daily-lifecycle"
   | "strategy-research-architecture"
+  | "cabin-control-architecture"
   | "btc-news-impact-architecture"
   | "whale-live-ingestion"
   | "whale-enrichment-report"
@@ -294,6 +295,44 @@ export const projects: Project[] = [
         label: "Research system architecture",
         caption:
           "Telegram message history is normalized into ordered trade events, correlated into typed TradeRecords, exposed through a focused Axum boundary, and carried into Next.js research views without losing the underlying trade lifecycle.",
+      },
+    ],
+  },
+  {
+    // Feature: Cabin joins the additional-work catalog with both product views and its real control architecture.
+    slug: "cabin",
+    title: "Cabin",
+    category: "Desktop infrastructure control",
+    description:
+      "A private multi-server desktop control room for allow-listed systemd services, combining searchable live journals, state-aware process control, and local SSH execution without a remote admin backend.",
+    tags: ["Rust", "Tauri", "React", "TypeScript", "SSH", "systemd", "journald"],
+    href: null,
+    linkLabel: null,
+    access: "Private · Personal infrastructure",
+    featured: false,
+    images: [
+      {
+        src: "/projects/cabin/01-service-control.png",
+        alt: "Cabin desktop dashboard showing two servers and six running systemd services",
+        label: "Multi-server control room",
+        caption:
+          "Server-specific service maps, grouped runtime states, automatic refresh, and allow-listed start, stop, restart, and log actions share one desktop workspace.",
+      },
+      {
+        src: "/projects/cabin/02-live-logs.png",
+        alt: "Cabin live journal viewer with search and systemd process controls",
+        label: "Live journal workspace",
+        caption:
+          "Searchable live journal output stays beside the selected process state and its guarded stop or restart controls, so observation and intervention remain in the same context.",
+      },
+    ],
+    views: [
+      {
+        kind: "diagram",
+        diagram: "cabin-control-architecture",
+        label: "Control-plane architecture",
+        caption:
+          "React sends typed Tauri requests into a Rust policy gate that validates the selected server, unit, and action against server-specific allowlists before invoking short-lived OpenSSH commands for systemd state, lifecycle actions, or bounded journald reads.",
       },
     ],
   },

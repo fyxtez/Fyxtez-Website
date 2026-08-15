@@ -16,6 +16,10 @@ function DiagramLoadingState() {
 const DisciplineDiagram = dynamic(() => import("../DisciplineDiagram/DisciplineDiagram"), {
   loading: DiagramLoadingState,
 });
+// Feature: Cabin has a dedicated architecture view instead of falling back to another project's diagram.
+const CabinDiagram = dynamic(() => import("../CabinDiagram/CabinDiagram"), {
+  loading: DiagramLoadingState,
+});
 const MacroImpactDiagram = dynamic(() => import("../MacroImpactDiagram/MacroImpactDiagram"), {
   loading: DiagramLoadingState,
 });
@@ -287,6 +291,9 @@ function LocalFirst() {
 }
 
 export default function ProjectDiagram({ diagram }: ProjectDiagramProps) {
+  if (diagram === "cabin-control-architecture") {
+    return <CabinDiagram />;
+  }
   if (diagram === "btc-news-impact-architecture") {
     return <MacroImpactDiagram />;
   }
