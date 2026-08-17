@@ -300,6 +300,9 @@ export default function ProjectGallery({ project, onClose }: ProjectGalleryProps
               ref={galleryStageRef}
               className={`gallery-image-stage ${
                 project.slug === "exchange-positions" ? "gallery-image-stage--mobile" : ""
+              } ${
+                // Fix: Ultrawide ShillTrace screenshots must not be enlarged past their native resolution.
+                project.slug === "shilltrace" ? "gallery-image-stage--shilltrace" : ""
               } ${view.kind === "diagram" ? "gallery-image-stage--diagram" : ""} ${
                 views.length > 1 ? "gallery-image-stage--stacked" : ""
               }`}
@@ -338,9 +341,12 @@ export default function ProjectGallery({ project, onClose }: ProjectGalleryProps
                 }`}
                 style={{
                   opacity: isDetailMode ? 1 : 1 - dragProgress * 0.1,
+                  // Fix: Avoid a permanent GPU transform while idle because it softens fine screenshot text.
                   transform: isDetailMode
                     ? `translate3d(${detailPan.x}px, ${detailPan.y}px, 0) scale(${zoomScale})`
-                    : `translate3d(${dragOffset}px, 0, 0) scale(${1 - dragProgress * 0.018})`,
+                    : isDragging || dragOffset !== 0
+                      ? `translate3d(${dragOffset}px, 0, 0) scale(${1 - dragProgress * 0.018})`
+                      : "none",
                 }}
               >
                 {view.kind === "image" ? (

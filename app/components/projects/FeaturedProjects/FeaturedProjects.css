@@ -67,6 +67,11 @@
   padding: 38px 30%;
 }
 
+/* Feature: ShillTrace uses ultrawide product captures, so a tighter frame keeps dashboard details readable. */
+.featured-project-card--shilltrace .featured-project-visual img {
+  padding: clamp(18px, 2vw, 32px);
+}
+
 .featured-project-visual:hover img,
 .featured-project-visual:focus-visible img {
   filter: brightness(1.08);

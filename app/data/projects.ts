@@ -212,6 +212,49 @@ export const projects: Project[] = [
     ],
   },
   {
+    // Feature: ShillTrace is a highlighted end-to-end product, with its four core workflows documented in the gallery.
+    slug: "shilltrace",
+    title: "ShillTrace",
+    category: "Telegram signal intelligence",
+    description:
+      "A private, self-hosted system that detects token calls across Telegram channels, resolves live market data, and preserves measurable performance histories for every channel and shill.",
+    tags: ["Rust", "Axum", "React", "PostgreSQL", "Telegram MTProto", "SSE"],
+    href: null,
+    linkLabel: null,
+    access: "Private · Self-hosted production",
+    featured: true,
+    images: [
+      {
+        src: "/projects/shilltrace/01-new-shills.png",
+        alt: "ShillTrace New Shills review inbox with token details and a live market-cap chart",
+        label: "Live review workspace",
+        caption:
+          "New Telegram calls arrive in a focused review inbox with source context, contract details, live market-cap tracking, performance multipliers, and direct market links.",
+      },
+      {
+        src: "/projects/shilltrace/02-all-tokens.png",
+        alt: "ShillTrace All Tokens archive showing tracked calls and performance metrics",
+        label: "Token performance archive",
+        caption:
+          "Every detected call remains inspectable through a chronological archive that compares its initial and current market cap, current multiplier, maximum multiplier, source channel, and review state.",
+      },
+      {
+        src: "/projects/shilltrace/03-channels.png",
+        alt: "ShillTrace Channels page with pinned Telegram channels and their token-call histories",
+        label: "Channel intelligence",
+        caption:
+          "Channel-level histories make each source measurable, while pinning, search, and monitoring controls keep the most relevant Telegram communities close at hand.",
+      },
+      {
+        src: "/projects/shilltrace/04-ignored-channels.png",
+        alt: "ShillTrace Ignored Channels management page",
+        label: "Monitoring control",
+        caption:
+          "Ignored and hidden channels stay outside the ingestion workflow without losing administrative control, and monitoring can be restored directly from the same workspace.",
+      },
+    ],
+  },
+  {
     slug: "mordexel",
     title: "Mordexel",
     category: "Automated execution engine",

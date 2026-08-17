@@ -12,10 +12,11 @@ export default function FeaturedProjects() {
         <p className="eyebrow">Highlighted systems</p>
         <div>
           <h2>Products built from problem to production.</h2>
+          {/* Feature: Keep the homepage summary aligned with the four highlighted product case studies. */}
           <p>
-            Three end-to-end systems showing how I turn data, integrations, and
+            Four end-to-end systems showing how I turn data, integrations, and
             real operational needs into reliable products—across trading, AI,
-            desktop, mobile, and beyond.
+            real-time intelligence, desktop, mobile, and beyond.
           </p>
         </div>
       </div>
@@ -31,10 +32,12 @@ export default function FeaturedProjects() {
               href={`/projects/${project.slug}`}
               aria-label={`Open ${project.title} gallery`}
             >
+              {/* Fix: Product screenshots contain fine UI text, so serve the lossless source instead of recompressing it. */}
               <Image
                 src={project.images[0].src}
                 alt={project.images[0].alt}
                 fill
+                unoptimized
                 sizes="(max-width: 800px) 100vw, 55vw"
               />
               <span className="featured-project-visual-bar">
