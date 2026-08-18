@@ -44,6 +44,11 @@ const TelegramNotifyDiagram = dynamic(
 const WhaleTrackerDiagram = dynamic(() => import("../WhaleTrackerDiagram/WhaleTrackerDiagram"), {
   loading: DiagramLoadingState,
 });
+// Feature: Weight Tracker has its own deployed mobile-sync architecture rather than borrowing a generic system diagram.
+const WeightTrackerDiagram = dynamic(
+  () => import("../WeightTrackerDiagram/WeightTrackerDiagram"),
+  { loading: DiagramLoadingState },
+);
 const YouTubeWatcherDiagram = dynamic(
   () => import("../YouTubeWatcherDiagram/YouTubeWatcherDiagram"),
   { loading: DiagramLoadingState },
@@ -291,6 +296,9 @@ function LocalFirst() {
 }
 
 export default function ProjectDiagram({ diagram }: ProjectDiagramProps) {
+  if (diagram === "weight-tracker-architecture") {
+    return <WeightTrackerDiagram />;
+  }
   if (diagram === "cabin-control-architecture") {
     return <CabinDiagram />;
   }

@@ -29,7 +29,8 @@ export type ProjectDiagramId =
   | "btc-news-impact-architecture"
   | "whale-live-ingestion"
   | "whale-enrichment-report"
-  | "whale-runtime-resilience";
+  | "whale-runtime-resilience"
+  | "weight-tracker-architecture";
 
 export type ProjectView =
   | ({ kind: "image" } & ProjectImage)
@@ -251,6 +252,44 @@ export const projects: Project[] = [
         label: "Monitoring control",
         caption:
           "Ignored and hidden channels stay outside the ingestion workflow without losing administrative control, and monitoring can be restored directly from the same workspace.",
+      },
+    ],
+  },
+  {
+    // Feature: Weight Tracker joins Additional Work as a complete mobile product with product views and its deployed sync architecture.
+    slug: "weight-tracker",
+    title: "Weight Tracker",
+    category: "Personal health tracking",
+    description:
+      "An authenticated Android and desktop companion that turns repeat meals, training, sleep, and morning weigh-ins into one-tap daily records, synchronized nutrition history, and exportable progress reports.",
+    tags: ["Rust", "Axum", "Tauri", "React", "PostgreSQL", "Android", "Nginx"],
+    href: null,
+    linkLabel: null,
+    access: "Private · Self-hosted personal production",
+    featured: false,
+    images: [
+      {
+        src: "/projects/weight-tracker/01-report.png",
+        alt: "Weight Tracker Android report showing weekly weight and calorie summaries with export actions",
+        label: "Progress and report workflow",
+        caption:
+          "Weekly weight and calorie context remains readable on mobile, while the report can be previewed inside the app, shared through Android, or saved as a portable CSV.",
+      },
+      {
+        src: "/projects/weight-tracker/02-food-entry.png",
+        alt: "Weight Tracker Android food screen with radial categories and today's selected foods",
+        label: "One-tap food tracking",
+        caption:
+          "A radial category model, personal Osnovno collection, preset portions, automatic nutrition totals, and a live daily summary reduce recurring food entry to a few deliberate taps.",
+      },
+    ],
+    views: [
+      {
+        kind: "diagram",
+        diagram: "weight-tracker-architecture",
+        label: "Synchronized product architecture",
+        caption:
+          "Android and desktop Tauri clients autosave one daily document through a typed HTTPS boundary; Nginx terminates TLS, Axum authenticates rotating sessions and isolates records by user, PostgreSQL persists history, and systemd plus Cabin keep the self-hosted runtime observable.",
       },
     ],
   },
